@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+html {
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
+}
+
+body {
+  font-family: 'Indie flower', cursive;
+  background-color: orange;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  max-height: 100%;
+  width: 100vw;
+  max-width: 100%;
+}
+
+.sandwichlist {
+  display: flex;
+  flex-direction: column;
+}
+
+.sandwichcard {
+  margin: 30px;
+  background-color: lightblue;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 8px;
+  padding: 0px 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.sandwichcard h2 {
+  padding: 20px 20px;
+  border-bottom: 1px solid #d9d9d9;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sandwichcard ul {
+  list-style-type: none;
+}
+
+.addtoorderbutton {
+  background-color: #f5f5f5;
+  border: none;
+  color: #000;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+  user-select: none;
+}
+
+.addtoorderbutton:hover {
+  background-color: #d9d9d9;
+}
+
+.addtoorderbutton:active {
+  background-color: #d9d9d9;
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
+}
+
+.sandwichcard__content {
+  transition: height 0.4s ease;
+  padding: 0px 20px;
+  overflow: hidden;
+}
+
+.ingredient button {
+  height: 15px;
+  width: 15px;
+  border-style: none;
+  margin: 0px 5px;
+  cursor: pointer;
+  box-shadow: 0 3px #999;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ingredient button:nth-child(1) {
+  background-color: lightcoral;
+  margin-right: 0px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.ingredient button:nth-child(2) {
+  background-color: #90ee90;
+  margin-left: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.ingredient button:nth-child(1):hover {
+  background-color: lightpink;
+}
+
+.ingredient button:nth-child(2):hover {
+  background-color: hsl(120, 91%, 86%);
+}
+
+.ingredient button:active {
+  background-color: #d9d9d9;
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.4);
+  transform: translateY(2px);
+}
