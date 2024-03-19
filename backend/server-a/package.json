@@ -4,8 +4,9 @@
   "description": "This is the Swagger 2.0 API for Web Architectures course group project work. ",
   "main": "index.js",
   "scripts": {
-	"prestart": "npm install",
-	"start": "node index.js"
+    "prestart": "npm install",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "swagger"
@@ -16,5 +17,8 @@
     "connect": "^3.2.0",
     "js-yaml": "^3.3.0",
     "swagger-tools": "0.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
