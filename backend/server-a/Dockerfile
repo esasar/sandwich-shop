@@ -1,12 +1,20 @@
-# This is where you define the image for
-# the server A, which implements the Swagger API.
+# Base image from the official Node.js image on Docker Hub
+FROM node:21 AS build
 
-# Start by copying the server stub to this directory.
+# Create app directory
+WORKDIR /app/backend/server-a
 
-# You should then use Noje image from Docker Hub as the basis,
-# and then follow the instructions linked to in assignment document.
-# You should be able to produce a working installation by just
-# following the instructions.
+# Copy dependency definitions
+COPY package.json .
 
+# Install dependencies
+RUN npm install --silent
 
-#FROM node:version...
+# Copy code needed to run the app to the container
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Serve the app
+CMD ["npm", "start"]

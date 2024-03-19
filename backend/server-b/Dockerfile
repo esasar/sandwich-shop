@@ -1,9 +1,20 @@
-# This is where you define the image for
-# the server B which processes the orders.
+# Base image from the official Node.js image on Docker Hub
+FROM node:21 AS build
 
-# You should then use Noje image from Docker Hub as the basis,
-# and then follow the instructions linked to in assignment document.
-# You should be able to produce a working installation by just
-# following the instructions.
+# Create app directory
+WORKDIR /app/backend/server-b
 
-#FROM node:version...
+# Copy dependency definitions
+COPY package.json .
+
+# Install dependencies
+RUN npm install --silent
+
+# Copy code needed to run the app to the container
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 8081
+
+# Serve the app
+CMD ["npm", "start"]
