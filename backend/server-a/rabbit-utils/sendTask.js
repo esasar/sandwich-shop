@@ -13,10 +13,16 @@ module.exports.addTask = function(rabbitHost, queueName, order){
     .then(function(ch) {
       ch.sendToQueue(queueName, new Buffer.from(JSON.stringify(order)), {},
       function(err, ok) {
-        if (err !== null)
-        console.warn(new Date(), 'Message nacked!');
-        else
-        console.log(new Date(), 'Message acked');
+        if (err !== null) {
+          console.warn(new Date(), 'Message nacked!');
+          // Change order status to failed on nack
+          order.status = "failed";
+        }
+        else {
+          console.log(new Date(), 'Message acked');
+          // Change order status to received on ack
+          order.status = "received";
+        }
       });
     });
   });
