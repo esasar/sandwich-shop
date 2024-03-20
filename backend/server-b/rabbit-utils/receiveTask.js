@@ -8,6 +8,17 @@ const sendTask = require('./sendTask.js')
 
 var amqp = require('amqplib');
 
+/**
+ * Generate a random number between min and max (inclusive)
+ * 
+ * @param {int} min minimum number (inclusive)
+ * @param {int} max maximum number (inclusive)
+ * @returns {int} random number between min and max
+ */
+const randomIntFromInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 module.exports.getTask = function(rabbitHost, queueName){
   amqp.connect('amqp://' + rabbitHost).then(function(conn) {
     process.once('SIGINT', function() { conn.close(); });
@@ -25,7 +36,7 @@ module.exports.getTask = function(rabbitHost, queueName){
         var order = JSON.parse(body);
         // Change order status to inQueue?
         console.log(" [x] Received '%s'", body);
-        var secs = 5; // Fixed length, change to random
+        var secs = randomIntFromInterval(5, 10);
         console.log(" [x] Task takes %d seconds", secs);
         setTimeout(function() {
           console.log(" [x] Done");
