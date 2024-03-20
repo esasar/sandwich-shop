@@ -3,6 +3,8 @@
 
 'use strict';
 
+const changeOrderStatus = require('../service/OrderService.js').changeOrderStatus;
+
 var amqp = require('amqplib');
 
 module.exports.getTask = function(rabbitHost, queueName){
@@ -18,14 +20,13 @@ module.exports.getTask = function(rabbitHost, queueName){
       return ok;
 
       function doWork(msg) {
-        var body = order.content.toString();
+        var body = msg.content.toString();
         console.log(" [x] Received '%s'", body);
-        var secs = body.split('.').length - 1;
-        //console.log(" [x] Task takes %d seconds", secs);
         setTimeout(function() {
           console.log(" [x] Done");
           ch.ack(msg);
-        }, secs * 1000);
+          // TODO: Change order status to "completed" here?
+        }, 0);
       }
     });
   }).catch(console.warn);

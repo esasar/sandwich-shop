@@ -10,7 +10,7 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "localhost"
+host: "localhost:8080" # Had to change this since otherwise the docs wont work?
 basePath: "/v1"
 tags:
 - name: "order"
