@@ -1,7 +1,5 @@
 'use strict';
 
-const receiveTask = require('./rabbit-utils/receiveTask.js')
-
 var fs = require('fs'),
     path = require('path'),
     http = require('http');
@@ -9,13 +7,31 @@ var fs = require('fs'),
 var app = require('connect')();
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
+const receiveTask = require('./rabbit-utils/receiveTask.js')
+const mongoose = require('mongoose');
+
+// TODO: place enviroment variables to config/env file
 var serverPort = 8080;
+// TODO: This mongo uri connects to a local mongo instance, 
+// not the one in the docker-compose file
+const mongoUri = 'mongodb://127.0.0.1:27017/crazepiano';
 
 // logger middleware
 app.use(function(req, res, next) {
   console.log(`${req.method} ${req.url}`);
   next();
 });
+
+// Connect to MongoDB
+mongoose.set('strictQuery', false)
+console.log('Connecting to MongoDB at', mongoUri);
+mongoose.connect(mongoUri)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB', err.message);
+  });
 
 // Allow all origins 
 // TODO: change this to only allow relevant origins

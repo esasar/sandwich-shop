@@ -17,6 +17,16 @@ const orderSchema = new Schema({
     }
 }, {timestamps: true});
 
-const Order = mongoose.model('Order',orderSchema);
+// Configure return object so that it matches the .yaml file
+orderSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        delete returnedObject._id;
+        delete returnedObject.__v;
+        delete returnedObject.createdAt;
+        delete returnedObject.updatedAt;
+    }
+});
+
+const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;
