@@ -62,6 +62,8 @@ Considerations:
 
 ## Sequence diagram of backend
 
+```
+mermaid
 sequenceDiagram
 	autonumber
 	participant server-a
@@ -82,3 +84,4 @@ sequenceDiagram
 	rabbit-runner-rabbit-->>server-b: acknowledgement
 	rabbit-runner-rabbit->>server-a: consume order
 	end
+```
