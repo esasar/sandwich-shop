@@ -62,8 +62,8 @@ Considerations:
 
 ## Sequence diagram of backend
 
-```
-mermaid
+```mermaid
+ %%{init: { 'theme':'dark', 'sequence': {'useMaxWidth':false} } }%%
 sequenceDiagram
 	autonumber
 	participant server-a
