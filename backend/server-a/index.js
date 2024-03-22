@@ -9,12 +9,7 @@ var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 const receiveTask = require('./rabbit-utils/receiveTask.js')
 const mongoose = require('mongoose');
-
-// TODO: place enviroment variables to config/env file
-var serverPort = 8080;
-// TODO: This mongo uri connects to a local mongo instance, 
-// not the one in the docker-compose file
-const mongoUri = 'mongodb://127.0.0.1:27017/crazepiano';
+const config = require('./utils/config.js');
 
 // logger middleware
 app.use(function(req, res, next) {
@@ -23,9 +18,8 @@ app.use(function(req, res, next) {
 });
 
 // Connect to MongoDB
-mongoose.set('strictQuery', false)
-console.log('Connecting to MongoDB at', mongoUri);
-mongoose.connect(mongoUri)
+console.log('Connecting to MongoDB at', config.dbUri);
+mongoose.connect(config.dbUri)
   .then(() => {
     console.log('Connected to MongoDB');
   })
@@ -83,8 +77,8 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   app.use(middleware.swaggerUi());
 
   // Start the server
-  http.createServer(app).listen(serverPort, function () {
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+  http.createServer(app).listen(config.serverPort, function () {
+    console.log('Your server is listening on port %d (http://localhost:%d)', config.serverPort, config.serverPort);
+    console.log('Swagger-ui is available on http://localhost:%d/docs', config.serverPort);
   });
 });
