@@ -1,41 +1,46 @@
 'use strict';
 
+const Order = require('../models/order.js');
 
 /**
- * Add an order for an sandwich
- *
- * order Order place an order for a sandwich
- * returns Order
- **/
+ * Add an order for a sandwich
+ * TODO: Since we are using mongo, the ID field is generated automatically
+ * and the ID field is not required in the request body. It is however
+ * in the api documentation, so I do not know if we can change it.
+ * 
+ * @param {Order} order place an order for a sandwich 
+ * @returns {Promise<Order>}
+ */
 exports.addOrder = function(order) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {"empty": false};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    const newOrder = new Order(order);
+    
+    newOrder.save()
+      .then(() => {
+        resolve(order);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
-
 
 /**
  * Find an order by its ID
  * IDs must be positive integers
- *
- * orderId Long ID of the order that needs to be fetched
- * returns Order
- **/
+ * 
+ * @param {int} orderId Long ID of the order that needs to be fetched 
+ * @returns {Promise<Order>}
+ */
 exports.getOrderById = function(orderId) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {"empty": false};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    Order.findOne({ id: orderId })
+      .then(order => {
+        resolve(order);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
 
@@ -43,21 +48,16 @@ exports.getOrderById = function(orderId) {
 /**
  * Get a list of all orders. Empty array if no orders are found.
  *
- * returns ArrayOfOrders
- **/
+ * @returns {Promise<Array<Order>}
+ */
 exports.getOrders = function() {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "blank": true,
-  "bytes": [],
-  "empty": true
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    Order.find({})
+      .then(orders => {
+        resolve(orders);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
-

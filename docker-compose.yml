@@ -1,26 +1,14 @@
-# This is the docker-compose-yml file that must be able to start
-# your group's backend.
-
-# Remember to comment this file well!
-
-# After you have Docker and Docker Compose installed,
-# and this file is ready, you use this file and run it with:
-# `docker-compose up --build`
-
 version: "3"
 
 services:
-  # An example configuration of server A for groups' convenience.
-  # server-a is based on the Docker image the groups produce and build themselves.
-
   # The server-a service
   server-a:
-    # Change the image information to match your server A image
-    # image: crazepiano/node-swagger:3a # $USERNAME/$IMAGENAME:$TAG, something like group000/node-swagger:3a
-
+    # Use the custom server-a image
+    image: crazepiano-server-a:latest
     # Service dependencies
     depends_on:
       - rapid-runner-rabbit
+      - mongo-database
     # Override the command to run the server
     command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "start"]
     # Configuration options applied at build time
@@ -35,10 +23,9 @@ services:
     # Expose the port to the backend network
     networks:
       - backend
+    # Environment variables
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: password
-      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo:27017/
+      MONGODB_URI: mongodb://mongo-database:27017/crazepiano
 
   # The RabbitMQ service
   rapid-runner-rabbit:
@@ -46,54 +33,42 @@ services:
     image: rabbitmq:3-management
     # Expose ports HOST:CONTAINER
     ports:
-      - 5672:5672
+      # The management plugin listens on port 15672
       - 15672:15672
-    # Expose the port to the backend network
-    expose:
-      - 5672
-    # Expose the port to the backend network
+    # Networks to join
     networks:
       - backend
 
-  # much of the server-b service entry can be copied from server-a
-  # service above. server-b directory Dockerfile has more
-  # information.
-  # A set of needed Docker instructions like 'image:' are shown
-  # below, groups should set their values. Groups are free to
-  # CRUD this set of instructions as they see fit.
   server-b:
-    # image:
+    # Use the custom server-b image
+    image: crazepiano-server-b:latest
+    # Service dependencies
     depends_on:
       - rapid-runner-rabbit
     command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "start"]
+    # Configuration options applied at build time
     build:
       dockerfile: Dockerfile
       context: ./backend/server-b
-    expose:
-      - 8081
+    # Networks to join
     networks:
       - backend
 
-  # Your group might want to use a database to store some data
-  # You can use any database you wish, PostgreSQL, MySQL and
-  # MongoDB have rather good Docker documentation and examples.
-  # But some groups could find a way to do this without
-  # databases
-  # database-service would go here.
-  database:
+  # Database service
+  mongo-database:
+    # Use the official MongoDB image
     image: mongo:latest
-    ports: 
-      - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+    # Mount a volume to store the data
     volumes:
       - mongodb:/data/db
+    # Networks to join
     networks:
       - backend
 
   # Frontend service
   frontend:
+    # Use the custom frontend image
+    image: crazepiano-frontend:latest
     # Configuration options applied at build time 
     build:
       # Name of the Dockerfile (not really necesarry when default name)
@@ -107,16 +82,10 @@ services:
     depends_on:
       - server-a
 
-# Here we create a named network, that all the backend components
-# must be added to for them to be able to communicate through
-# exposed ports.
+# Networks shared between services
 networks:
   backend:
 
-# If you use databases for storing information, you can define
-# their volumes here.
-# Documentation: https://docs.docker.com/storage/volumes/
-# Personally I like to look at the database's image's Dockerfile
-# in the Docker Hub to see what directory it uses to store data.
+# Named volumes shared between services
 volumes:
   mongodb:

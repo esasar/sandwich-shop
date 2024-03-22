@@ -5,7 +5,8 @@ FROM node:21 AS build
 WORKDIR /app/backend/server-a
 
 # Copy dependency definitions
-COPY package.json .
+COPY ./package.json ./
+COPY ./package-lock.json ./
 
 # Install dependencies
 RUN npm install --silent

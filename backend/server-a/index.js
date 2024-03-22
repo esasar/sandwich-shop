@@ -1,7 +1,5 @@
 'use strict';
 
-const receiveTask = require('./rabbit-utils/receiveTask.js')
-
 var fs = require('fs'),
     path = require('path'),
     http = require('http');
@@ -9,13 +7,25 @@ var fs = require('fs'),
 var app = require('connect')();
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
-var serverPort = 8080;
+const receiveTask = require('./rabbit-utils/receiveTask.js')
+const mongoose = require('mongoose');
+const config = require('./utils/config.js');
 
 // logger middleware
 app.use(function(req, res, next) {
   console.log(`${req.method} ${req.url}`);
   next();
 });
+
+// Connect to MongoDB
+console.log('Connecting to MongoDB at', config.dbUri);
+mongoose.connect(config.dbUri)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB', err.message);
+  });
 
 // Allow all origins 
 // TODO: change this to only allow relevant origins
@@ -67,8 +77,8 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   app.use(middleware.swaggerUi());
 
   // Start the server
-  http.createServer(app).listen(serverPort, function () {
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+  http.createServer(app).listen(config.serverPort, function () {
+    console.log('Your server is listening on port %d (http://localhost:%d)', config.serverPort, config.serverPort);
+    console.log('Swagger-ui is available on http://localhost:%d/docs', config.serverPort);
   });
 });

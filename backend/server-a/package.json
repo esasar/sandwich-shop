@@ -16,6 +16,7 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "connect": "^3.2.0",
+    "dotenv": "^16.4.5",
     "js-yaml": "^3.3.0",
     "mongoose": "^8.2.2",
     "swagger-tools": "0.10.1"
