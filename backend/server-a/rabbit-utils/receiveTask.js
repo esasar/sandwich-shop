@@ -3,9 +3,8 @@
 
 'use strict';
 
-const changeOrderStatus = require('../service/OrderService.js').changeOrderStatus;
-
 var amqp = require('amqplib');
+const orderService = require('../service/OrderService.js');
 
 module.exports.getTask = function(rabbitHost, queueName){
   amqp.connect('amqp://' + rabbitHost).then(function(conn) {
@@ -25,7 +24,11 @@ module.exports.getTask = function(rabbitHost, queueName){
         setTimeout(function() {
           console.log(" [x] Done");
           ch.ack(msg);
-          // TODO: Change order status to "completed" here?
+          // Change order status in the database
+          orderService.updateOrder(
+            JSON.parse(body).id,
+            JSON.parse(body)
+          )
         }, 0);
       }
     });

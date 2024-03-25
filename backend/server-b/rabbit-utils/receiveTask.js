@@ -34,14 +34,16 @@ module.exports.getTask = function(rabbitHost, queueName){
       function doWork(msg) {
         var body = msg.content.toString();
         var order = JSON.parse(body);
-        // Change order status to inQueue?
         console.log(" [x] Received '%s'", body);
         var secs = randomIntFromInterval(5, 10);
         console.log(" [x] Task takes %d seconds", secs);
+        // Change order status to "received"
+        order.status = "received";
+        sendTask.addTask("rapid-runner-rabbit", "message-queue-B", order);
         setTimeout(function() {
           console.log(" [x] Done");
           ch.ack(msg);
-          // Change order status to ready
+          // Change order status to "ready"
           order.status = "ready";
           sendTask.addTask("rapid-runner-rabbit", "message-queue-B", order);
         }, secs*1000);

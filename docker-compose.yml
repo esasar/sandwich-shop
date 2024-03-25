@@ -35,6 +35,9 @@ services:
     ports:
       # The management plugin listens on port 15672
       - 15672:15672
+    # Expose the port to the backend network
+    expose:
+      - 5672
     # Networks to join
     networks:
       - backend

@@ -3,11 +3,30 @@ import { useState } from 'react'
 
 import Ingredient from './Ingredient'
 
+import orderService from '../services/order'
+
 const SandwichCard = ({ sandwich }) => {
   const [toggle, setToggle] = useState(false)
   
   const handleToggle = () => {
     setToggle(!toggle)
+  }
+
+  // TODO: this is just a mock implementation
+  const handleOrder = () => {
+    console.log(`Ordering ${sandwich.name}`)
+    const mockOrder = {
+      id: Math.floor(Math.random() * 1000) + 1,
+      sandwichId: sandwich.sandwichId,
+      status: "ordered"
+    }
+    orderService.create(mockOrder)
+      .then(() => {
+        console.log(`Order placed!`)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
   }
 
   const contentHeight = `${100 + sandwich.ingredients.length * 23}px`;
@@ -21,7 +40,7 @@ const SandwichCard = ({ sandwich }) => {
             <Ingredient key={index} ingredient={ingredient} />
           ))}
         </ul>
-        <button className='addtoorderbutton'>Add to order</button>
+        <button onClick={handleOrder} className='addtoorderbutton'>Add to order</button>
       </div>
     </div>
   )

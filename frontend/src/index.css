@@ -112,3 +112,19 @@ body {
   box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.4);
   transform: translateY(2px);
 }
+
+.orderlist {
+  display: flex;
+  flex-direction: column;
+}
+
+.order {
+  margin: 5px;
+  background-color: lightblue;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 8px;
+  padding: 0px 15px;
+  overflow: hidden;
+  list-style: none;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+}

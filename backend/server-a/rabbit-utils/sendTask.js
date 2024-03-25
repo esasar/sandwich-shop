@@ -5,6 +5,7 @@
 'use strict';
 
 var amqp = require('amqplib');
+const orderService = require('../service/OrderService.js');
 
 module.exports.addTask = function(rabbitHost, queueName, order){
   amqp.connect('amqp://' + rabbitHost)
@@ -15,11 +16,19 @@ module.exports.addTask = function(rabbitHost, queueName, order){
       function(err, ok) {
         if (err !== null) {
           console.warn(new Date(), 'Message nacked!');
-          // TODO: Change order status to "failed" here?
+          // Change order status to "failed"
+          orderService.updateOrder(
+            order.id,
+            { status: "failed" }
+          )
         }
         else {
           console.log(new Date(), 'Message acked');
-          // TODO: Change order status to "processing" here?
+          // Change order status to "inQueue"
+          orderService.updateOrder(
+            order.id,
+            { status: "inQueue" }
+          )
         }
       });
     });

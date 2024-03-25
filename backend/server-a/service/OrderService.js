@@ -61,3 +61,21 @@ exports.getOrders = function() {
       });
   });
 }
+
+/**
+ * Update the an order by its ID
+ * 
+ * @param {int} orderId ID of the order that needs to be updated
+ * @param {Order} order Updated order object
+ */
+exports.updateOrder = function(orderId, body) {
+  return new Promise(function(resolve, reject) {
+    Order.findOneAndUpdate({ id: orderId }, body, { new: true })
+      .then(order => {
+        resolve(order);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  }) 
+}

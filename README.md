@@ -52,3 +52,36 @@ Once the application is running, you can access it as follows:
 - MongoDB
 ### Containerization
 - Docker
+
+## Order status updates
+
+There are `5` possible states for the order. Initially it is set to as `ordered` and added to `message-queue-A`. On succesful `ack` it is changed to `inQueue` and `failed` otherwise. When `server-b` begins processing the order, order status is set to `received` and added to `message-queue-B`. When processing is done, the status is set to `ready` and added to `message-queue-B`.
+
+Considerations:
+* If `server-A` fails to receive messages from `message-queue-B`, order status will not be updated correctly
+
+## Sequence diagram of backend
+
+```mermaid
+ %%{init: { 'theme':'dark', 'sequence': {'useMaxWidth':false} } }%%
+sequenceDiagram
+	autonumber
+	participant server-a
+	rect rgba(191, 223, 255, 0.5)
+	note right of server-a: message-queue-a
+	participant rabbit-runner-rabbit
+	server-a->>rabbit-runner-rabbit: publish order
+	rabbit-runner-rabbit-->>server-a: acknowledgement
+	participant server-b
+	rabbit-runner-rabbit->>server-b: consume order
+	end
+	loop doWork
+	    server-b->>server-b: 'Make sandwiches'
+	end
+	rect rgba(191, 223, 255, 0.5)
+	note right of server-a: message-queue-b
+	server-b->>rabbit-runner-rabbit: publish order
+	rabbit-runner-rabbit-->>server-b: acknowledgement
+	rabbit-runner-rabbit->>server-a: consume order
+	end
+```
