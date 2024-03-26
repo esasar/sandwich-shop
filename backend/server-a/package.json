@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon -L index.js"
   },
   "keywords": [
     "swagger"
@@ -16,10 +16,15 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "connect": "^3.2.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-async-errors": "^3.1.1",
     "js-yaml": "^3.3.0",
     "mongoose": "^8.2.2",
-    "swagger-tools": "0.10.1"
+    "swagger-tools": "0.10.1",
+    "swagger-ui-express": "^5.0.0",
+    "yaml": "^2.4.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

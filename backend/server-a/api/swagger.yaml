@@ -16,8 +16,7 @@ tags:
 - name: "order"
   description: "Sandwich orders"
 - name: "sandwich"
-  description: "NOT MANDATORY TO IMPLEMENT!\nTypes of sandwich that users can order-\
-    \ CRUD\n"
+  description: "Types of sandwich that users can order"
 - name: "user"
   description: "NOT MANDATORY TO IMPLEMENT!\nUser management\n"
 schemes:
@@ -51,7 +50,7 @@ paths:
         description: "place an order for a sandwich"
         required: true
         schema:
-          $ref: "#/definitions/Order"
+          $ref: "#/definitions/OrderWithoutId"
       responses:
         "200":
           description: "successful operation"
@@ -65,7 +64,7 @@ paths:
       tags:
       - "order"
       summary: "Find an order by its ID"
-      description: "IDs must be positive integers"
+      description: "IDs are 24 character hexadecimal"
       operationId: "getOrderById"
       produces:
       - "application/json"
@@ -74,9 +73,9 @@ paths:
         in: "path"
         description: "ID of the order that needs to be fetched"
         required: true
-        type: "integer"
-        minimum: 1
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       responses:
         "200":
           description: "successful operation"
@@ -117,10 +116,14 @@ paths:
         description: "Sandwich object that needs to be added to the store"
         required: true
         schema:
-          $ref: "#/definitions/Sandwich"
+          $ref: "#/definitions/SandwichPost"
       security:
       - api_key: []
       responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Sandwich not created"
         "405":
           description: "Invalid input"
       x-swagger-router-controller: "Sandwich"
@@ -138,8 +141,9 @@ paths:
         in: "path"
         description: "ID of sandwich to return"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       security:
       - api_key: []
       responses:
@@ -166,17 +170,24 @@ paths:
         in: "path"
         description: "ID of sandwich to return"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       - in: "body"
         name: "body"
         description: "Sandwich object that needs to be added to the store"
         required: true
         schema:
-          $ref: "#/definitions/Sandwich"
+          $ref: "#/definitions/SandwichPost"
       security:
       - api_key: []
       responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Sandwich"
+        "400":
+          description: "Invalid ID supplied"
         "405":
           description: "Invalid input"
       x-swagger-router-controller: "Sandwich"
@@ -196,15 +207,16 @@ paths:
         in: "path"
         description: "Sandwich id to delete"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 23
+        maxLength: 24
       security:
       - api_key: []
       responses:
+        "204":
+          description: "no content"
         "400":
           description: "Invalid ID supplied"
-        "404":
-          description: "Sandwich not found"
       x-swagger-router-controller: "Sandwich"
   /user:
     post:
@@ -358,11 +370,13 @@ definitions:
     type: "object"
     properties:
       id:
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       sandwichId:
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       status:
         type: "string"
         description: "Order Status"
@@ -375,8 +389,29 @@ definitions:
     xml:
       name: "Order"
     example:
-      sandwichId: 6
-      id: 0
+      sandwichId: "6602a29748bd8027176f58da"
+      status: "ordered"
+      id: "6602a29748bd8027176f58e0"
+  OrderWithoutId:
+    type: "object"
+    properties:
+      sandwichId:
+        type: "string"
+        minLength: 24
+        maxLength: 24
+      status:
+        type: "string"
+        description: "Order Status"
+        enum:
+        - "ordered"
+        - "received"
+        - "inQueue"
+        - "ready"
+        - "failed"
+    xml:
+      name: "OrderWithoutId"
+    example:
+      sandwichId: "6602a29748bd8027176f58da"
       status: "ordered"
   ArrayOfOrders:
     type: "array"
@@ -386,8 +421,9 @@ definitions:
     type: "object"
     properties:
       id:
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       username:
         type: "string"
       email:
@@ -398,7 +434,7 @@ definitions:
       name: "User"
     example:
       password: "password"
-      id: 0
+      id: "6602a29748bd8027176f58d9"
       email: "email"
       username: "username"
   Topping:
@@ -407,15 +443,29 @@ definitions:
     - "name"
     properties:
       id:
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       name:
         type: "string"
     xml:
       name: "Tag"
     example:
       name: "name"
-      id: 6
+      id: "6602a29748bd8027176f58cf"
+  ToppingWithoutName:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+        minLength: 24
+        maxLength: 24
+    xml:
+      name: "Tag"
+    example:
+      id: "6602a29748bd8027176f58cf"
   Sandwich:
     type: "object"
     required:
@@ -423,8 +473,9 @@ definitions:
     - "name"
     properties:
       id:
-        type: "integer"
-        format: "int64"
+        type: "string"
+        minLength: 24
+        maxLength: 24
       name:
         type: "string"
         example: "my-super-sandwich"
@@ -447,13 +498,45 @@ definitions:
     example:
       name: "my-super-sandwich"
       toppings:
-      - name: "name"
-        id: 6
-      - name: "name"
-        id: 6
-      id: 0
+      - name: "cucumber"
+        id: "6602a29748bd8027176f58cf"
+      - name: "tomato"
+        id: "6602a29748bd8027176f58d0"
+      id: "6602a29748bd8027176f58d9"
+      breadType: "oat"
+  SandwichPost:
+    type: "object"
+    required:
+    - "breadType"
+    - "name"
+    properties:
+      name:
+        type: "string"
+        example: "my-super-sandwich"
+      toppings:
+        type: "array"
+        xml:
+          name: "toppings"
+          wrapped: true
+        items:
+          $ref: "#/definitions/ToppingWithoutName"
+      breadType:
+        type: "string"
+        description: "bread used in the sandwich"
+        enum:
+        - "oat"
+        - "rye"
+        - "wheat"
+    xml:
+      name: "Sandwich"
+    example:
+      name: "my-super-sandwich"
+      toppings:
+      - id: "6602a29748bd8027176f58cf"
+      - id: "6602a29748bd8027176f58d0"
       breadType: "oat"
   ArrayOfSandwiches:
     type: "array"
     items:
       $ref: "#/definitions/Sandwich"
+  
