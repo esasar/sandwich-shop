@@ -10,7 +10,7 @@ services:
       - rapid-runner-rabbit
       - mongo-database
     # Override the command to run the server
-    command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "start"]
+    command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "run", "dev"]
     # Configuration options applied at build time
     build:
       # Name of the Dockerfile (not really necesarry when default name)
@@ -26,6 +26,9 @@ services:
     # Environment variables
     environment:
       MONGODB_URI: mongodb://mongo-database:27017/crazepiano
+    # Mount volume for local development hot-reload
+    volumes:
+      - ./backend/server-a:/app/backend/server-a
 
   # The RabbitMQ service
   rapid-runner-rabbit:
@@ -65,6 +68,8 @@ services:
     volumes:
       - mongodb:/data/db
     # Networks to join
+    ports:
+      - 27017:27017
     networks:
       - backend
 

@@ -2,7 +2,7 @@
 FROM node:21-alpine AS build
 
 # Create app directory
-WORKDIR /app
+WORKDIR /app/frontend
 
 # Copy dependency definitions
 COPY package.json .
