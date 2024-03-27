@@ -128,3 +128,7 @@ body {
   list-style: none;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
+
+.ingredient span {
+  margin-right: 10px;
+}

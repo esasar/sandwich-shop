@@ -29,15 +29,16 @@ const SandwichCard = ({ sandwich }) => {
       })
   }
 
-  const contentHeight = `${100 + sandwich.ingredients.length * 23}px`;
+  const contentHeight = `${100 + sandwich.toppings.length * 23}px`;
 
   return (
     <div className='sandwichcard'>
       <h2 onClick={handleToggle}>{sandwich.name}</h2>
+      <h2 onClick={handleToggle}>bread type: {sandwich.breadType}</h2>
       <div className='sandwichcard__content' style={{height: toggle ? contentHeight : "0px"}}>
         <ul>
-          {sandwich.ingredients.map((ingredient, index) => (
-            <Ingredient key={index} ingredient={ingredient} />
+          {sandwich.toppings.map((ingredient, index) => (
+            <Ingredient key={index} ingredient={ingredient}/>
           ))}
         </ul>
         <button onClick={handleOrder} className='addtoorderbutton'>Add to order</button>
@@ -49,7 +50,7 @@ const SandwichCard = ({ sandwich }) => {
 SandwichCard.propTypes = {
   sandwich: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    ingredients: PropTypes.array.isRequired
+    toppings: PropTypes.array.isRequired
   }).isRequired
 }
 
