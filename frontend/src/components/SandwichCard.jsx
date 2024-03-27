@@ -15,12 +15,12 @@ const SandwichCard = ({ sandwich }) => {
   // TODO: this is just a mock implementation
   const handleOrder = () => {
     console.log(`Ordering ${sandwich.name}`)
-    const mockOrder = {
-      id: Math.floor(Math.random() * 1000) + 1,
-      sandwichId: sandwich.sandwichId,
+    const order = {
+      sandwichId: sandwich.id,
       status: "ordered"
     }
-    orderService.create(mockOrder)
+    console.log('Order:', order);
+    orderService.create(order)
       .then(() => {
         console.log(`Order placed!`)
       })
@@ -29,13 +29,13 @@ const SandwichCard = ({ sandwich }) => {
       })
   }
 
-  const contentHeight = `${100 + sandwich.toppings.length * 23}px`;
+  const contentHeight = `${140 + sandwich.toppings.length * 23}px`;
 
   return (
     <div className='sandwichcard'>
       <h2 onClick={handleToggle}>{sandwich.name}</h2>
-      <h2 onClick={handleToggle}>bread type: {sandwich.breadType}</h2>
       <div className='sandwichcard__content' style={{height: toggle ? contentHeight : "0px"}}>
+        <p>Bread: {sandwich.breadType}</p>
         <ul>
           {sandwich.toppings.map((ingredient, index) => (
             <Ingredient key={index} ingredient={ingredient}/>
@@ -49,8 +49,10 @@ const SandwichCard = ({ sandwich }) => {
 
 SandwichCard.propTypes = {
   sandwich: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    toppings: PropTypes.array.isRequired
+    toppings: PropTypes.array.isRequired,
+    breadType: PropTypes.string.isRequired
   }).isRequired
 }
 

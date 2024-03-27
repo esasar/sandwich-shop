@@ -20,7 +20,6 @@ export default SandwichList */
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import SandwichCard from "./SandwichCard"
-import PropTypes from "prop-types"
 
 const SandwichList = () => {
   const [sandwiches, setSandwiches] = useState([]);
@@ -47,10 +46,6 @@ const SandwichList = () => {
       ))}
     </div>
   )
-}
-
-SandwichList.propTypes = {
-  sandwiches: PropTypes.array.isRequired,
 }
 
 export default SandwichList

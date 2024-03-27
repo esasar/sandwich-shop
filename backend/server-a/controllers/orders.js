@@ -29,7 +29,8 @@ ordersRouter.post('/', async (request, response) => {
 
   const savedOrder = await order.save();
   // Send the order to the RabbitMQ queue
-  // sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
+  sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
+
   response.json(savedOrder);
 });
 

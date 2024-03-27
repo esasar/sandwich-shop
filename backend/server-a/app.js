@@ -11,7 +11,6 @@ const swaggerFile = fs.readFileSync('./api/swagger.yaml', 'utf8');
 const swaggerDocument = YAML.parse(swaggerFile);
 
 // Modules
-const config = require('./utils/config.js');
 const middleware = require('./utils/middleware.js');
 const receiveTask = require('./rabbit-utils/receiveTask.js');
 const ordersRouter = require('./controllers/orders.js');
