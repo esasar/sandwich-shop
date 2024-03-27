@@ -26,13 +26,14 @@ module.exports.getTask = function(rabbitHost, queueName){
           console.log(" [x] Done");
           ch.ack(msg);
           // Change order status in the database
-          Order.findByIdAndUpdate(body, { status: 'completed' }, { new: true }, function(err, order) {
-            if (err) {
-              console.error('Error updating order status', err);
-            } else {
-              console.log('Order status updated to completed', order);
-            }
-          });
+          body = JSON.parse(body);
+          Order.findByIdAndUpdate(body.id, { status: body.status }, { new: true })
+            .then(updatedOrder => {
+              console.log('Order status changed to ', body.status);
+            })
+            .catch(err => {
+              console.error('Error changing order status to ', body.status);
+            });
         }, 0);
       }
     });
