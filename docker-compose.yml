@@ -10,7 +10,7 @@ services:
       - rapid-runner-rabbit
       - mongo-database
     # Override the command to run the server
-    command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "run", "dev"]
+    command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "start"]
     # Configuration options applied at build time
     build:
       # Name of the Dockerfile (not really necesarry when default name)
