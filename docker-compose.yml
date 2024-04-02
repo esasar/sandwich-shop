@@ -27,6 +27,7 @@ services:
     environment:
       MONGODB_URI: mongodb://mongo-database:27017/crazepiano
     # Mount volume for local development hot-reload
+    # TODO: remove this before final submission
     volumes:
       - ./backend/server-a:/app/backend/server-a
 
