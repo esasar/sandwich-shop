@@ -22,11 +22,9 @@
     "express-async-errors": "^3.1.1",
     "js-yaml": "^3.3.0",
     "mongoose": "^8.2.2",
+    "nodemon": "^3.1.0",
     "swagger-tools": "0.10.1",
     "swagger-ui-express": "^5.0.0",
     "yaml": "^2.4.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
   }
 }
