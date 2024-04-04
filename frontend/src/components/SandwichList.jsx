@@ -1,22 +1,3 @@
-/* import SandwichCard from "./SandwichCard"
-import PropTypes from "prop-types"
-
-const SandwichList = ({ sandwiches }) => {
-  return (
-    <div className='sandwichlist'>
-      {sandwiches.map((sandwich) => (
-        <SandwichCard key={sandwich.sandwichId} sandwich={sandwich} />
-      ))}
-    </div>
-  )
-}
-
-SandwichList.propTypes = {
-  sandwiches: PropTypes.array.isRequired,
-}
-
-export default SandwichList */
-
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import SandwichCard from "./SandwichCard"
@@ -28,7 +9,7 @@ const SandwichList = () => {
   useEffect(() => {
     const fetchAllSandwiches = async() => {
       try {
-        const response = await axios.get('http://localhost:8080/v1/sandwich'); // endpoint need to be checked 
+        const response = await axios.get('http://localhost:8080/v1/sandwich');
         setSandwiches(response.data);
         console.log(response.data);
       } catch (error) {

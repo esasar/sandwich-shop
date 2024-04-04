@@ -6,10 +6,12 @@ const url = 'http://localhost:8080/v1/order';
  * @returns {Array<Order>} 
  */
 const getAll = async () => {
+  const token = localStorage.getItem('token');
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // add the access token to the header
     }
   });
 
@@ -26,10 +28,12 @@ const getAll = async () => {
  * @returns {Object} created order
  */
 const create = async (order) => {
+  const token = localStorage.getItem('token');
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // add the access token to the header
     },
     body: JSON.stringify(order)
   });
