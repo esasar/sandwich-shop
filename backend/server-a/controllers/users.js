@@ -1,15 +1,16 @@
 'use strict';
 
-const userRouter = require('express').Router();
-var utils = require('../utils/writer.js');
+const usersRouter = require('express').Router();
 var User = require('../models/user.js');
+const jwt = require('jsonwebtoken');
+const config = require('../utils/config.js');
 
 // TODO: Include API key when posting? 
 
 // Password is not encrypted now and this could be added later.
 // Creates a new user. If user with the same username already exists, gives an error. 
 // Notice that this doesn't check if username, password and email are valid.
-userRouter.post('/', async (request, response) => {
+usersRouter.post('/', async (request, response) => {
   const body = request.body;
 
   // Should this check be done elsewhere?
@@ -34,7 +35,7 @@ userRouter.post('/', async (request, response) => {
 
 // TODO: Logging user in to the system.
 // Checks if user with same username and password can be found in the system.
-userRouter.post('/login', async (request, response) => {
+usersRouter.post('/login', async (request, response) => {
   const body = request.body;
   const user = await User.findOne(
     {
@@ -45,7 +46,17 @@ userRouter.post('/login', async (request, response) => {
   });
 
   if (user !== null) {
-    // TODO: log in to the system.
+    // Generate a JWT, expires in 60*60 seconds (1h)
+    const token = jwt.sign(
+      {
+        username: user.username,
+        id: user._id
+      },
+      config.jwtSecret, 
+      { expiresIn: 60 * 60 }
+    );
+
+    response.status(200).send({ token, username: user.username, name: user.name });
   }
   else {
     response.status(400).json({ error: 'Invalid username/password supplied' });
@@ -53,13 +64,13 @@ userRouter.post('/login', async (request, response) => {
 });
 
 // TODO: Logs out the current user.
-userRouter.post('/logout', async (request, response) => {
-  // TODO: logout.
-
+usersRouter.post('/logout', async (request, response) => {
+  // TODO: logout. 
+  // Since we use JWT, we cant really log out. Depracated this feature or 
 });
 
 // Get user by username.
-userRouter.get('/:username', async (request, response) => {
+usersRouter.get('/:username', async (request, response) => {
   // First checks if username is valid.
   if (!usernameIsValid(request.params.username)) {
     response.status(400).json({ error: 'Invalid username supplied' });
@@ -77,8 +88,12 @@ userRouter.get('/:username', async (request, response) => {
 });
 
 // Updates username. This can only be done by the logged in user.
-userRouter.put('/:username', async (request, response) => {
+usersRouter.put('/:username', async (request, response) => {
   // TODO: checks if user is logged in.
+  // Compare logged in users' username with the username in the URL
+  if (request.user.username !== request.params.username) {
+    response.status(401).json({ error: 'Unauthorized' });
+  }
 
   // First checks if username is valid. 
   if (!usernameIsValid(request.params.username)) {
@@ -98,7 +113,7 @@ userRouter.put('/:username', async (request, response) => {
 });
 
 // Delete user. This can only be done by the logged in user.
-userRouter.delete('/:username', async (request, response) => {
+usersRouter.delete('/:username', async (request, response) => {
   // TODO: checks if user is logged in.
   // First checks if username is valid. 
   if (!usernameIsValid(request.params.username)) {
@@ -121,4 +136,4 @@ function usernameIsValid(username) {
   return /^[0-9a-zA-Z_.-]+$/.test(username);
 }
 
-module.exports = userRouter;
+module.exports = usersRouter;
