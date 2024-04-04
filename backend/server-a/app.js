@@ -15,7 +15,7 @@ const middleware = require('./utils/middleware.js');
 const receiveTask = require('./rabbit-utils/receiveTask.js');
 const ordersRouter = require('./controllers/orders.js');
 const sandwichesRouter = require('./controllers/sandwiches.js');
-const userRouter = require('./controllers/User.js');
+const usersRouter = require('./controllers/users.js');
 const mongo = require('./utils/mongo.js');
 
 // Create the Express app
@@ -31,11 +31,12 @@ mongo.connectToDb();
 app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
+app.use(middleware.userExtractor);
 
 // Routes
 app.use('/v1/order', ordersRouter);
 app.use('/v1/sandwich', sandwichesRouter);
-app.use('/v1/user', userRouter);
+app.use('/v1/user', usersRouter);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(middleware.errorHandler);

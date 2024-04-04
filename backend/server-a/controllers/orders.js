@@ -4,21 +4,37 @@ const Order = require('../models/order.js');
 const sendTask = require('../rabbit-utils/sendTask.js');
 
 ordersRouter.get('/', async (request, response) => {
-  const orders = await Order.find({});
+  if (!request.user) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+
+  const orders = await Order.find({
+    user: request.user._id
+  });
+
   response.json(orders);
 });
 
 ordersRouter.get('/:id', async (request, response) => {
+  if (!request.user) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+
   const order = await Order.findById(request.params.id);
+
   if (!order) {
     response.status(404).json({ error: 'order not found' });
+  } else if (order.user.toString() !== request.user._id.toString()) {
+    response.status(401).json({ error: 'unauthorized' });
   } else {
     response.json(order);
   }
 });
 
 ordersRouter.post('/', async (request, response) => {
-  // if (!request.user) { ... }; // Check for token, if we are to implement authentication
+  if (!request.user) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
 
   const body = request.body;
 
