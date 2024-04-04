@@ -4,6 +4,8 @@
 
 WebDev2 -course project work. Collaborators:
 - Esa Särkelä
+- Heidi Seppi
+- 
 
 ## Running the application
 Clone the repository to your local machine
