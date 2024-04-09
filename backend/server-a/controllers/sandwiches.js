@@ -16,9 +16,11 @@ sandwichesRouter.get('/:id', async (request, response) => {
   }
 });
 
-// TODO: this does not work as specified
 sandwichesRouter.post('/', async (request, response) => {
-  // Posting should require an API key
+  if (!request.apiKeyValid) {
+    return response.status(403).json({ error: 'Invalid/missing api key' });
+  }
+
   const body = request.body;
 
   body.toppings = body.toppings.map(topping => new mongoose.Types.ObjectId(topping));
@@ -30,7 +32,8 @@ sandwichesRouter.post('/', async (request, response) => {
   });
 
   const savedSandwich = await sandwich.save();
-  response.json(savedSandwich);
+
+  response.status(200).json(savedSandwich);
 });
 
 sandwichesRouter.post('/:id', async (request, response) => {
@@ -49,12 +52,16 @@ sandwichesRouter.post('/:id', async (request, response) => {
   response.json(updatedSandwich);
 });
 
-// TODO: this does not work as specified
 sandwichesRouter.delete('/:id', async (request, response) => {
-  // Deleting should require an API key
-  const he = await Sandwich.findByIdAndDelete(request.params.id);
-  console.log(he);
-  response.status(204).end();
+  if (!request.apiKeyValid) {
+    response.status(403).json({ error: 'Invalid/missing api key' });
+  } else {
+    const he = await Sandwich.findByIdAndDelete(request.params.id);
+    if (!he) {
+      response.status(404).json({ error: 'Invalid ID supplied' });
+    }
+    response.status(204).end();
+  }
 });
 
 module.exports = sandwichesRouter;

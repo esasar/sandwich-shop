@@ -32,6 +32,7 @@ app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.userExtractor);
+app.use(middleware.apiKeyValidator);
 
 // Routes
 app.use('/v1/order', ordersRouter);

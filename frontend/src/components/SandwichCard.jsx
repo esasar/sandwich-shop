@@ -12,7 +12,6 @@ const SandwichCard = ({ sandwich }) => {
     setToggle(!toggle)
   }
 
-  // TODO: this is just a mock implementation
   const handleOrder = () => {
     console.log(`Ordering ${sandwich.name}`)
     const order = {

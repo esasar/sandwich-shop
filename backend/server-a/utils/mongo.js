@@ -6,17 +6,23 @@ const User = require('../models/user.js');
 const Topping = require('../models/topping.js');
 const Sandwich = require('../models/sandwich.js');
 
+/**
+ * MongoDB connector
+ */
 const connectToDb = async () => {
   console.log(`connecting to MongoDB at ${config.dbUri}`);
   try {
     await mongoose.connect(config.dbUri);
-    seedDb();
+    // seedDB(); // Uncomment this line to seed the database
     console.log('connected to MongoDB');
   } catch (error) {
     console.error('error connecting to MongoDB:', error.message);
   }
 };
 
+/**
+ * MongoDB data seeder
+ */
 const seedDb = async () => {
   try {
     await mongoose.connection.dropDatabase();
@@ -24,13 +30,18 @@ const seedDb = async () => {
     const exampleUsers = [
       {
         username: 'alice',
-        password: 'password',
+        password: 'daisy',
         email: 'alice@email.com',
       },
       {
         username: 'bob',
-        password: 'password',
+        password: 'builder',
         email: 'bob@othermail.com',
+      },
+      {
+        username: 'user1',
+        password: 'password',
+        email: 'user1@useremail.com',
       },
     ];
 

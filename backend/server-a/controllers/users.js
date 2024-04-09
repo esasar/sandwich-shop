@@ -89,7 +89,6 @@ usersRouter.get('/:username', async (request, response) => {
 
 // Updates username. This can only be done by the logged in user.
 usersRouter.put('/:username', async (request, response) => {
-  // TODO: checks if user is logged in.
   // Compare logged in users' username with the username in the URL
   if (request.user.username !== request.params.username) {
     response.status(401).json({ error: 'Unauthorized' });
@@ -114,7 +113,10 @@ usersRouter.put('/:username', async (request, response) => {
 
 // Delete user. This can only be done by the logged in user.
 usersRouter.delete('/:username', async (request, response) => {
-  // TODO: checks if user is logged in.
+  // Only allow a logged in user to delete their own account.
+  if (request.user.username !== request.params.username) {
+    return response.status(401).json({ error: 'Unauthorized' });
+  }
   // First checks if username is valid. 
   if (!usernameIsValid(request.params.username)) {
     response.status(400).json({ error: 'Invalid username supplied' });
