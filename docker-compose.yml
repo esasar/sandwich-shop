@@ -26,10 +26,9 @@ services:
     # Environment variables
     environment:
       MONGODB_URI: mongodb://mongo-database:27017/crazepiano
-    # Mount volume for local development hot-reload
-    # TODO: remove this before final submission
-    volumes:
-      - ./backend/server-a:/app/backend/server-a
+    # Mount volume for local development hot-reload (uncomment to use)
+    # volumes:
+    #  - ./backend/server-a:/app/backend/server-a
 
   # The RabbitMQ service
   rapid-runner-rabbit:
@@ -86,7 +85,8 @@ services:
       context: ./frontend
     # Expose ports HOST:CONTAINER
     ports:
-      - 5173:5173
+      - 80:80
+      # - 5173:5173 # For development
     # Service dependencies
     depends_on:
       - server-a
