@@ -4,10 +4,8 @@ import SandwichList from "./components/SandwichList";
 import OrderList from "./components/OrderList";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import orderService from './services/order';
 
 const App = () => {
-  const [orders, setOrders] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
 
@@ -16,16 +14,6 @@ const App = () => {
     if (token) {
       setIsLoggedIn(true);
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const orders = await orderService.getAll();
-      setOrders(orders);
-    };
-    fetchOrders();
-    const intervalId = setInterval(fetchOrders, 1000);
-    return () => clearInterval(intervalId);
   }, []);
 
   const handleLogin = () => {
@@ -50,7 +38,7 @@ const App = () => {
       {isLoggedIn && (
         <>
           <SandwichList />
-          <OrderList orders={orders} />
+          <OrderList />
           <button onClick={handleLogout} className="button-85"> logout </button>
         </>
       )}
