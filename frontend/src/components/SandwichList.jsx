@@ -5,18 +5,18 @@ import SandwichCard from "./SandwichCard"
 const SandwichList = () => {
   const [sandwiches, setSandwiches] = useState([]);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
-    const fetchAllSandwiches = async() => {
-      try {
-        const response = await axios.get('http://localhost:8080/v1/sandwich');
-        setSandwiches(response.data);
-        console.log(response.data);
-      } catch (error) {
-        setError(error);
-      }
-    };
-    fetchAllSandwiches();
+      const fetchAllSandwiches = async() => {
+        try {
+          const response = await axios.get('http://localhost:8080/v1/sandwich');
+          setSandwiches(response.data);
+          console.log(response.data);
+        } catch (error) {
+          setError(error);
+        }
+      };
+      fetchAllSandwiches();
   }, [])
 
   return (

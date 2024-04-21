@@ -6,19 +6,19 @@ const url = 'http://localhost:8080/v1/order';
  * @returns {Array<Order>} 
  */
 const getAll = async () => {
-  const token = localStorage.getItem('token');
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // add the access token to the header
-    }
-  });
+    const token = localStorage.getItem('token');
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // add the access token to the header
+        } 
+    });
 
-  // TODO: What happens if the request fails?
-  const orders = await response.json();
+    // TODO: What happens if the request fails?
+    const orders = await response.json();
 
-  return orders;
+    return orders;
 };
 
 /**
@@ -44,4 +44,4 @@ const create = async (order) => {
   return newOrder;
 };
 
-export default { getAll, create};
+export default { getAll, create };
