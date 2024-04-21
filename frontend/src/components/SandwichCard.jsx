@@ -19,9 +19,15 @@ const SandwichCard = ({ sandwich }) => {
       status: "ordered"
     }
     console.log('Order:', order);
-    orderService.create(order)
-      .then(() => {
-        console.log(`Order placed!`)
+    const orderId = orderService.create(order)
+      .then((newOrder) => {
+        console.log(`Order placed!`, newOrder)
+
+        // Updates order to the user's details.
+        orderService.updateUser(newOrder.id)
+          .then(() => {
+            console.log('Order added to the user')
+          })
       })
       .catch((err) => {
         console.error(err)

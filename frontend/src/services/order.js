@@ -1,4 +1,5 @@
-const url = 'http://localhost:8080/v1/order';
+const url_order = 'http://localhost:8080/v1/order';
+const url_user = 'http://localhost:8080/v1/user';
 
 /**
  * Gets all orders from the backend
@@ -6,19 +7,21 @@ const url = 'http://localhost:8080/v1/order';
  * @returns {Array<Order>} 
  */
 const getAll = async () => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // add the access token to the header
-        } 
-    });
+  const username = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
 
-    // TODO: What happens if the request fails?
-    const orders = await response.json();
+  const response = await fetch(url_user, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // add the access token to the header
+      } 
+  });
 
-    return orders;
+  // TODO: What happens if the request fails?
+  const orders = await response.json();
+
+  return orders;
 };
 
 /**
@@ -29,7 +32,7 @@ const getAll = async () => {
  */
 const create = async (order) => {
   const token = localStorage.getItem('token');
-  const response = await fetch(url, {
+  const response = await fetch(url_order, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,4 +47,27 @@ const create = async (order) => {
   return newOrder;
 };
 
-export default { getAll, create };
+/**
+ * Updates new order into user's own orders array.
+ * 
+ * @param {Object} orderId 
+ */
+const updateUser = async (orderId) => {
+  const username = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
+
+  console.log(orderId)
+
+  const response = await fetch(`${url_user}?username=${username}/orderId=${orderId}`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+  });
+  
+  const updatedUser = await response.json();
+  console.log(updatedUser);
+};
+
+export default { getAll, create, updateUser };
