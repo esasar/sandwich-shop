@@ -10,19 +10,19 @@ const getAllOrders = async () => {
   const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
 
-  const response = await fetch(`${url_user}/${username}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // add the access token to the header
-      } 
+  const response = await fetch(`${url_order}`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}` // add the access token to the header
+  }
   });
 
   // TODO: What happens if the request fails?
   const orders = await response.json();
 
   //console.log(orders.orders);
-  return orders.orders;
+  return orders;
 };
 
 const getOrderStatus = async (orderId) => {
@@ -44,8 +44,9 @@ const getOrderStatus = async (orderId) => {
  * @param {Object} order 
  * @returns {Object} created order
  */
-const create = async (order) => {
+const createOrder = async (order) => {
   const token = localStorage.getItem('token');
+  console.log(order);
   const response = await fetch(url_order, {
     method: 'POST',
     headers: {
@@ -59,6 +60,22 @@ const create = async (order) => {
   const newOrder = await response.json();
 
   return newOrder;
+};
+
+const getUserId = async () => {
+  const username = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(`${url_user}/${username}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // add the access token to the header
+    }
+  });
+  const user = await response.json();
+  console.log(user.id);
+  return user.id;
 };
 
 /**
@@ -82,4 +99,4 @@ const updateUser = async (orderId) => {
   console.log(response);
 };
 
-export default { getAllOrders, getOrderStatus, create, updateUser };
+export default { getAllOrders, getOrderStatus, createOrder, getUserId, updateUser };

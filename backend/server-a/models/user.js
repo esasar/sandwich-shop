@@ -15,7 +15,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    orders: [{
+    orders: [{ // TODO, HEIDI: Needs to be removed.
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order'
     }]

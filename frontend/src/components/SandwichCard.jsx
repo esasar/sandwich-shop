@@ -14,25 +14,31 @@ const SandwichCard = ({ sandwich }) => {
 
   const handleOrder = () => {
     console.log(`Ordering ${sandwich.name}`)
-    const order = {
-      sandwichId: sandwich.id,
-      status: "ordered"
-    }
-    console.log('Order:', order);
-    orderService.create(order)
-      .then((newOrder) => {
-        console.log(`Order placed!`, newOrder)
-
-        // Updates order to the user's details.
-        orderService.updateUser(newOrder.id)
-          .then(() => {
-            console.log('Order added to the user')
+    orderService.getUserId()
+      .then((userId) => {
+        //console.log("userId: ", userId);
+        const order = {
+          sandwichId: sandwich.id,
+          status: "ordered",
+          userId: userId
+        }
+        //console.log('Order:', order);
+        orderService.createOrder(order)
+          .then((newOrder) => {
+            console.log(`Order placed!`, newOrder)
           })
       })
+
+        // Updates order to the user's details. HEIDI
+        //orderService.updateUser(newOrder.id)
+        //  .then(() => {
+        //    console.log('Order added to the user')
+        //  })
+      //})
       .catch((err) => {
         console.error(err)
       })
-  }
+  };
 
   const contentHeight = `${140 + sandwich.toppings.length * 23}px`;
 

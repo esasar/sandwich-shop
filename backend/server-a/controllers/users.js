@@ -130,7 +130,7 @@ usersRouter.delete('/:username', async (request, response) => {
   }
 });
 
-// TODO: Add to the Swagger.
+// TODO, HEIDI: Remove.
 // Adds placed order to the user. This can only be done by the logged in user.
 usersRouter.put('/:username/:orderId', async (request, response) => {
   // Compare logged in users' username with the username in the URL

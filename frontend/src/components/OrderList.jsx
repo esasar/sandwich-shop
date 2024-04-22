@@ -9,31 +9,33 @@ const OrderList = () => {
   const [error, setError] = useState(null);
   
   useEffect(() => {
-      const fetchUserOrders = async () => {
+      const fetchOrders = async () => {
         try {
           const orders = await orderService.getAllOrders();
+          
+          //const orders = await orderService.getAllOrders();
           //setOrders(orders);
           //setUserOrders(response.data.orders);
           //console.log(orders);
 
         // For each orderId in the array, fetching status information to be able to show them on orderlist.
         const orderlist = [];
-        orders.forEach(async item => {
-          const order = await orderService.getOrderStatus(item);
-          console.log("order information: ", order)
-          orderlist.push(order);
-        });
+        //orders.forEach(async item => {
+        //  const order = await orderService.getOrderStatus(item);
+        //  console.log("order information: ", order)
+        //  orderlist.push(order);
+        //});
 
-        setOrders(orderlist);
-        console.log(orderlist)
+        //setOrders(orderlist);
+        //console.log(orderlist)
         } catch (error) {
           setError(error);
         }
       };
 
-      fetchUserOrders();
+      //fetchUserOrders();
       // Polling for new order statuses.
-      const intervalId = setInterval(fetchUserOrders, 2000);
+      //const intervalId = setInterval(fetchUserOrders, 2000);
   }, [])
 
   return (

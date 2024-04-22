@@ -40,7 +40,8 @@ ordersRouter.post('/', async (request, response) => {
 
   const order = new Order({
     sandwichId: body.sandwichId,
-    status: body.status || 'ordered'
+    status: body.status || 'ordered',
+    userId: body.userId
   });
 
   const savedOrder = await order.save();
