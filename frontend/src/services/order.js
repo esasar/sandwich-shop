@@ -2,15 +2,15 @@ const url_order = 'http://localhost:8080/v1/order';
 const url_user = 'http://localhost:8080/v1/user';
 
 /**
- * Gets all orders from the backend
+ * Gets all orders for certain user from the backend.
  * 
  * @returns {Array<Order>} 
  */
-const getAll = async () => {
+const getAllOrders = async () => {
   const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
 
-  const response = await fetch(url_user, {
+  const response = await fetch(`${url_user}/${username}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -21,7 +21,21 @@ const getAll = async () => {
   // TODO: What happens if the request fails?
   const orders = await response.json();
 
-  return orders;
+  //console.log(orders.orders);
+  return orders.orders;
+};
+
+const getOrderStatus = async (orderId) => {
+  //await Promise.all(orderArray.map(async (orderId) => {
+    const content = await fetch(`${url_order}/${orderId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(content);
+    
+  return content;
 };
 
 /**
@@ -56,9 +70,7 @@ const updateUser = async (orderId) => {
   const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
 
-  console.log(orderId)
-
-  const response = await fetch(`${url_user}?username=${username}/orderId=${orderId}`, {
+  const response = await fetch(`${url_user}/${username}/${orderId}`, {
       method: 'PUT',
       headers: {
           'Content-Type': 'application/json',
@@ -66,8 +78,8 @@ const updateUser = async (orderId) => {
       }
   });
   
-  const updatedUser = await response.json();
-  console.log(updatedUser);
+  //const updatedUser = await response.json();
+  console.log(response);
 };
 
-export default { getAll, create, updateUser };
+export default { getAllOrders, getOrderStatus, create, updateUser };

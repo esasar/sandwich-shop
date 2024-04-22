@@ -151,7 +151,7 @@ usersRouter.put('/:username/:orderId', async (request, response) => {
     response.status(404).json({ error: 'User not found' });
   }
   else {
-    console.log(user)
+    console.log(user) // HEIDI?
   }
   response.end();
   

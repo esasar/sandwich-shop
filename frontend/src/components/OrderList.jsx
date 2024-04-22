@@ -4,22 +4,36 @@ import { useState, useEffect } from "react";
 import orderService from '../services/order';
 
 const OrderList = () => {
+  //const [userOrders, setUserOrders] = useState([]);
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
   
   useEffect(() => {
-      const fetchOrders = async () => {
+      const fetchUserOrders = async () => {
         try {
-          const orders = await orderService.getAll();
-          setOrders(orders);
-          console.log(orders);
+          const orders = await orderService.getAllOrders();
+          //setOrders(orders);
+          //setUserOrders(response.data.orders);
+          //console.log(orders);
+
+        // For each orderId in the array, fetching status information to be able to show them on orderlist.
+        const orderlist = [];
+        orders.forEach(async item => {
+          const order = await orderService.getOrderStatus(item);
+          console.log("order information: ", order)
+          orderlist.push(order);
+        });
+
+        setOrders(orderlist);
+        console.log(orderlist)
         } catch (error) {
           setError(error);
         }
-        
       };
-      fetchOrders();
-      const intervalId = setInterval(fetchOrders, 1000);
+
+      fetchUserOrders();
+      // Polling for new order statuses.
+      const intervalId = setInterval(fetchUserOrders, 2000);
   }, [])
 
   return (

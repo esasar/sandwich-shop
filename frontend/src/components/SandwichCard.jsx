@@ -19,7 +19,7 @@ const SandwichCard = ({ sandwich }) => {
       status: "ordered"
     }
     console.log('Order:', order);
-    const orderId = orderService.create(order)
+    orderService.create(order)
       .then((newOrder) => {
         console.log(`Order placed!`, newOrder)
 
