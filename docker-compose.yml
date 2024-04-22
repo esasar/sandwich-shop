@@ -85,8 +85,8 @@ services:
       context: ./frontend
     # Expose ports HOST:CONTAINER
     ports:
-      # - 80:80
-      - 5173:5173 # For development
+      - 80:80
+      #- 5173:5173 # For development
     # Service dependencies
     depends_on:
       - server-a
