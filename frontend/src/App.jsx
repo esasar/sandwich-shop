@@ -26,6 +26,7 @@ const App = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
     // redirect to the login page
     window.location.reload();
   }
@@ -33,13 +34,20 @@ const App = () => {
   return (
     <div>
       <h1>&#129386; Ugly font sandwich shop &#129386;</h1>
+      {isLoggedIn && (
+        <>
+        <div class="flex"> 
+        <p class="loggedIn-text">Logged in as {localStorage.getItem('username')} </p>
+        <button onClick={handleLogout} className="button-85"> logout </button>
+        </div>
+        </>
+      )}
       {!isLoggedIn && isLoginMode && <Login onLogin={handleLogin} />} 
       {!isLoggedIn && !isLoginMode && <Register onLogin={handleLogin} />} 
       {isLoggedIn && (
         <>
           <SandwichList />
           <OrderList />
-          <button onClick={handleLogout} className="button-85"> logout </button>
         </>
       )}
       {!isLoggedIn && ( 

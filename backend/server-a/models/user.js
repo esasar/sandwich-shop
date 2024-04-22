@@ -14,11 +14,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-    },
-    orders: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
-    }]
+    }
 }, {timestamps: true});
 
 // Configure return object so that it matches the .yaml file

@@ -1,24 +1,28 @@
 const url = 'http://localhost:8080/v1/order';
 
+import userService from './user';
+
 /**
- * Gets all orders from the backend
+ * Gets all orders for certain user from the backend.
  * 
  * @returns {Array<Order>} 
  */
-const getAll = async () => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // add the access token to the header
-        } 
-    });
+const getAllOrders = async () => {
+  const token = localStorage.getItem('token');
 
-    // TODO: What happens if the request fails?
-    const orders = await response.json();
+  const response = await fetch(`${url}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // add the access token to the header
+    }
+  });
 
-    return orders;
+  // TODO: What happens if the request fails?
+  const orders = await response.json();
+  console.log(orders);
+
+  return orders;
 };
 
 /**
@@ -27,8 +31,9 @@ const getAll = async () => {
  * @param {Object} order 
  * @returns {Object} created order
  */
-const create = async (order) => {
+const createOrder = async (order) => {
   const token = localStorage.getItem('token');
+  console.log(order);
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -44,4 +49,4 @@ const create = async (order) => {
   return newOrder;
 };
 
-export default { getAll, create };
+export default { getAllOrders, createOrder };

@@ -15,6 +15,7 @@ const Login = () => {
       if (response.status === 200) {
         const { token, username, name } = response.data;
         localStorage.setItem('token', token);
+        localStorage.setItem('username', username);
         setMessage('Login successful!');
         // Redirect to the main page
         window.location.reload(); // feel free to change it to a better way.

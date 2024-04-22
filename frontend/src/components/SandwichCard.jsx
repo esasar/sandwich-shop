@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Ingredient from './Ingredient'
 
 import orderService from '../services/order'
+import userService from '../services/user'
 
 const SandwichCard = ({ sandwich }) => {
   const [toggle, setToggle] = useState(false)
@@ -14,19 +15,23 @@ const SandwichCard = ({ sandwich }) => {
 
   const handleOrder = () => {
     console.log(`Ordering ${sandwich.name}`)
-    const order = {
-      sandwichId: sandwich.id,
-      status: "ordered"
-    }
-    console.log('Order:', order);
-    orderService.create(order)
-      .then(() => {
-        console.log(`Order placed!`)
+    userService.getUser()
+      .then((user) => {
+        const order = {
+          sandwichId: sandwich.id,
+          status: "ordered",
+          userId: user.id
+        }
+
+        orderService.createOrder(order)
+          .then((newOrder) => {
+            console.log(`Order placed!`)
+          })
       })
       .catch((err) => {
         console.error(err)
       })
-  }
+  };
 
   const contentHeight = `${140 + sandwich.toppings.length * 23}px`;
 

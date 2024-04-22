@@ -11,6 +11,11 @@ const orderSchema = new Schema({
     type: String,
     enum: ['ordered', 'received', 'inQueue', 'ready', 'failed'],
     default: 'ordered'
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 }, {timestamps: true});
 

@@ -2,10 +2,9 @@
 
 const usersRouter = require('express').Router();
 var User = require('../models/user.js');
+const Order = require('../models/order.js');
 const jwt = require('jsonwebtoken');
 const config = require('../utils/config.js');
-
-// TODO: Include API key when posting? 
 
 // Password is not encrypted now and this could be added later.
 // Creates a new user. If user with the same username already exists, gives an error. 
@@ -33,7 +32,6 @@ usersRouter.post('/', async (request, response) => {
   }
 });
 
-// TODO: Logging user in to the system.
 // Checks if user with same username and password can be found in the system.
 usersRouter.post('/login', async (request, response) => {
   const body = request.body;
@@ -63,10 +61,10 @@ usersRouter.post('/login', async (request, response) => {
   }
 });
 
-// TODO: Logs out the current user.
+
 usersRouter.post('/logout', async (request, response) => {
-  // TODO: logout. 
-  // Since we use JWT, we cant really log out. Depracated this feature or 
+  // Since we use JWT, we can't really log out. Depracated this feature or..
+
 });
 
 // Get user by username.
