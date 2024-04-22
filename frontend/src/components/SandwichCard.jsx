@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Ingredient from './Ingredient'
 
 import orderService from '../services/order'
+import userService from '../services/user'
 
 const SandwichCard = ({ sandwich }) => {
   const [toggle, setToggle] = useState(false)
@@ -14,27 +15,19 @@ const SandwichCard = ({ sandwich }) => {
 
   const handleOrder = () => {
     console.log(`Ordering ${sandwich.name}`)
-    orderService.getUserId()
-      .then((userId) => {
-        //console.log("userId: ", userId);
+    userService.getUser()
+      .then((user) => {
         const order = {
           sandwichId: sandwich.id,
           status: "ordered",
-          userId: userId
+          userId: user.id
         }
-        //console.log('Order:', order);
+
         orderService.createOrder(order)
           .then((newOrder) => {
-            console.log(`Order placed!`, newOrder)
+            console.log(`Order placed!`)
           })
       })
-
-        // Updates order to the user's details. HEIDI
-        //orderService.updateUser(newOrder.id)
-        //  .then(() => {
-        //    console.log('Order added to the user')
-        //  })
-      //})
       .catch((err) => {
         console.error(err)
       })

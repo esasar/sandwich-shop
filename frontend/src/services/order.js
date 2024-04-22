@@ -1,5 +1,6 @@
-const url_order = 'http://localhost:8080/v1/order';
-const url_user = 'http://localhost:8080/v1/user';
+const url = 'http://localhost:8080/v1/order';
+
+import userService from './user';
 
 /**
  * Gets all orders for certain user from the backend.
@@ -7,35 +8,21 @@ const url_user = 'http://localhost:8080/v1/user';
  * @returns {Array<Order>} 
  */
 const getAllOrders = async () => {
-  const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
 
-  const response = await fetch(`${url_order}`, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}` // add the access token to the header
-  }
+  const response = await fetch(`${url}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // add the access token to the header
+    }
   });
 
   // TODO: What happens if the request fails?
   const orders = await response.json();
+  console.log(orders);
 
-  //console.log(orders.orders);
   return orders;
-};
-
-const getOrderStatus = async (orderId) => {
-  //await Promise.all(orderArray.map(async (orderId) => {
-    const content = await fetch(`${url_order}/${orderId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    console.log(content);
-    
-  return content;
 };
 
 /**
@@ -47,7 +34,7 @@ const getOrderStatus = async (orderId) => {
 const createOrder = async (order) => {
   const token = localStorage.getItem('token');
   console.log(order);
-  const response = await fetch(url_order, {
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -62,41 +49,4 @@ const createOrder = async (order) => {
   return newOrder;
 };
 
-const getUserId = async () => {
-  const username = localStorage.getItem('username');
-  const token = localStorage.getItem('token');
-
-  const response = await fetch(`${url_user}/${username}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // add the access token to the header
-    }
-  });
-  const user = await response.json();
-  console.log(user.id);
-  return user.id;
-};
-
-/**
- * Updates new order into user's own orders array.
- * 
- * @param {Object} orderId 
- */
-const updateUser = async (orderId) => {
-  const username = localStorage.getItem('username');
-  const token = localStorage.getItem('token');
-
-  const response = await fetch(`${url_user}/${username}/${orderId}`, {
-      method: 'PUT',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      }
-  });
-  
-  //const updatedUser = await response.json();
-  console.log(response);
-};
-
-export default { getAllOrders, getOrderStatus, createOrder, getUserId, updateUser };
+export default { getAllOrders, createOrder };

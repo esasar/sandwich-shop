@@ -130,33 +130,6 @@ usersRouter.delete('/:username', async (request, response) => {
   }
 });
 
-// TODO, HEIDI: Remove.
-// Adds placed order to the user. This can only be done by the logged in user.
-usersRouter.put('/:username/:orderId', async (request, response) => {
-  // Compare logged in users' username with the username in the URL
-  //if (request.user.username !== request.params.username) {
-  //  response.status(401).json({ error: 'Unauthorized' });
-  //}
-
-  // First checks if orderId is valid. 
-  const order = await Order.findById(request.params.orderId);
-  if (!order) {
-    response.status(404).json({ error: 'Order not found' });
-  } 
-
-  const user = await User.findOneAndUpdate({ username: request.params.username }, 
-  { $push: { orders: request.params.orderId} });
-
-  if ( user === null ) {
-    response.status(404).json({ error: 'User not found' });
-  }
-  else {
-    console.log(user) // HEIDI?
-  }
-  response.end();
-  
-});
-
 // Function checks if username is valid. 
 // Username can only consist of number, letter and _, ., - characters.
 function usernameIsValid(username) {

@@ -3,15 +3,16 @@ const Order = require('../models/order.js');
 
 const sendTask = require('../rabbit-utils/sendTask.js');
 
+/**
+ * Returns all of the orders.
+ */
 ordersRouter.get('/', async (request, response) => {
-  if (!request.user) {
-    return response.status(401).json({ error: 'token missing or invalid' });
-  }
-
-  const orders = await Order.find({
-    user: request.user._id
-  });
-
+  // TODO: Not needed here? Doesn't work like this.
+  //if (!request.user) {
+  //  return response.status(401).json({ error: 'token missing or invalid' });
+  //}
+  
+  const orders = await Order.find({});
   response.json(orders);
 });
 
