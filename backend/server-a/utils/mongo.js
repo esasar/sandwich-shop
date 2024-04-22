@@ -13,7 +13,7 @@ const connectToDb = async () => {
   console.log(`connecting to MongoDB at ${config.dbUri}`);
   try {
     await mongoose.connect(config.dbUri);
-    // seedDB(); // Uncomment this line to seed the database
+    await seedDb(); // Uncomment this line to seed the database
     console.log('connected to MongoDB');
   } catch (error) {
     console.error('error connecting to MongoDB:', error.message);
@@ -97,6 +97,7 @@ const seedDb = async () => {
 
     await Promise.all(sandwichPromises);
 
+    /**
     const exampleOrders = [
       {
         sandwichId: await Sandwich.findOne({ name: 'Lettuce and tomato' }),
@@ -114,6 +115,7 @@ const seedDb = async () => {
     });
 
     await Promise.all(orderPromises);
+    */
 
     console.log('Data seeded successfully');
     
