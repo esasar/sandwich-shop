@@ -19,7 +19,7 @@ const OrderList = () => {
     };
 
     fetchOrders();
-    const intervalId = setInterval(fetchOrders, 2000);
+    const intervalId = setInterval(fetchOrders, 1000);
     return () => clearInterval(intervalId);
   }, [])
 
