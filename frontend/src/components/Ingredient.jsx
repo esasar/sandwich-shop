@@ -8,7 +8,7 @@ const Ingredient = ({ ingredient }) => {
         {/* count > 0 && <>{count}</> */}
         {/* <button onClick={() => count > 0 && setCount(count - 1)}>-</button> */}
         {/* <button onClick={()=>setCount(count + 1)}>+</button> */}
-        {ingredient.name}
+        <>&#9830; </> {ingredient.name}
         </li>
     )
 }
