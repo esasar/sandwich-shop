@@ -309,6 +309,26 @@ paths:
         "404":
           description: "User not found"
       x-swagger-router-controller: "User"
+  /user/validate/{token}:
+    post:
+      tags:
+      - "user"
+      summary: "Validate JWT"
+      operationId: "validateToken"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "path"
+        description: "JWT to be validated."
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "token validated succesfully"
+        "400":
+          description: "token missing"
+      x-swagger-router-controller: "User"
     put:
       tags:
       - "user"

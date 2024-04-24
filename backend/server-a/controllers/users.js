@@ -131,13 +131,17 @@ usersRouter.delete('/:username', async (request, response) => {
 
 usersRouter.post('/validate/:token', async (request, response) => {
   const token = request.params.token;
+  if (!token) {
+    response.status(400).json({ error: 'Token missing' });
+  }
+
   const decodedToken = jwt.verify(token, config.jwtSecret);
 
   if (decodedToken) {
     response.status(200).json({ message: 'Token is valid' });
   }
   else {
-    response.status(401).json({ error: 'Token is invalid' });
+    response.status(200).json({ error: 'Token is invalid' });
   }
 })
 
