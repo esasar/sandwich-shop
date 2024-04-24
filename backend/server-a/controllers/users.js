@@ -2,7 +2,6 @@
 
 const usersRouter = require('express').Router();
 var User = require('../models/user.js');
-const Order = require('../models/order.js');
 const jwt = require('jsonwebtoken');
 const config = require('../utils/config.js');
 
@@ -129,6 +128,18 @@ usersRouter.delete('/:username', async (request, response) => {
     response.end();
   }
 });
+
+usersRouter.post('/validate/:token', async (request, response) => {
+  const token = request.params.token;
+  const decodedToken = jwt.verify(token, config.jwtSecret);
+
+  if (decodedToken) {
+    response.status(200).json({ message: 'Token is valid' });
+  }
+  else {
+    response.status(401).json({ error: 'Token is invalid' });
+  }
+})
 
 // Function checks if username is valid. 
 // Username can only consist of number, letter and _, ., - characters.
