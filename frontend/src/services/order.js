@@ -1,7 +1,5 @@
 const url = 'http://localhost:8080/v1/order';
 
-const App = './'
-
 /**
  * Gets all orders for certain user from the backend.
  * 

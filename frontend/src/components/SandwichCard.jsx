@@ -25,7 +25,7 @@ const SandwichCard = ({ sandwich }) => {
 
         orderService.createOrder(order)
           .then((newOrder) => {
-            console.log(`Order placed!`)
+            console.log(`Order placed for ${sandwich.name} with id ${newOrder.id}`)
           })
       })
       .catch((err) => {

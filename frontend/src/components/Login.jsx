@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import userService from "../services/user";
 
 
 const Login = () => {
@@ -11,11 +11,11 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/v1/user/login', { username, password});
-      if (response.status === 200) {
-        const { token, username, name } = response.data;
-        localStorage.setItem('token', token);
+      const data = await userService.loginUser(username, password);
+
+      if (!data.error) {
         localStorage.setItem('username', username);
+        localStorage.setItem('token', data.token);
         setMessage('Login successful!');
         // Redirect to the main page
         window.location.reload(); // feel free to change it to a better way.

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
-
+import { useState } from "react";
+import userService from "../services/user";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,9 +11,9 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/v1/user/', { username, email, password});
+      const data = await userService.registerUser(username, email, password);
 
-      if (response.status === 200) {
+      if (!data.error) {
         setMessage('Registeration successful!');
         // Redirect to the login page
         window.location.reload();

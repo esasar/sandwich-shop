@@ -44,9 +44,9 @@ services:
       - 5672
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
-      interval: 1s
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 30
     # Networks to join
     networks:
       - backend

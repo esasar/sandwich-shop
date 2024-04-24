@@ -36,8 +36,8 @@ const App = () => {
       <h1>&#129386; Ugly font sandwich shop &#129386;</h1>
       {isLoggedIn && (
         <>
-        <div class="flex"> 
-        <p class="loggedIn-text">Logged in as {localStorage.getItem('username')} </p>
+        <div className="flex"> 
+        <p className="loggedIn-text">Logged in as {localStorage.getItem('username')} </p>
         <button onClick={handleLogout} className="button-85"> logout </button>
         </div>
         </>
