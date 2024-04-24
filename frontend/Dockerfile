@@ -1,5 +1,5 @@
 # Base image from the official Node.js image on Docker Hub
-FROM node:21-alpine AS build
+FROM node:21-alpine3.18 AS build
 
 # Create app directory
 WORKDIR /app/frontend
