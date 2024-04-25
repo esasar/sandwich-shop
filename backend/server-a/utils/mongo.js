@@ -62,6 +62,27 @@ const seedDb = async () => {
       {
         name: 'cucumber',
       },
+      {
+        name: 'ham',
+      },
+      {
+        name: 'mayonnaise',
+      },
+      {
+        name: 'cheddar cheese',
+      },
+      {
+        name: 'butter',
+      },
+      {
+        name: 'egg',
+      },
+      {
+        name: 'bacon',
+      },
+      {
+        name: 'avocado',
+      },
     ];
 
     const toppingPromises = exampleToppings.map(async (topping) => {
@@ -73,20 +94,45 @@ const seedDb = async () => {
 
     const exampleSandwiches = [
       {
-        name: 'Lettuce and tomato',
+        name: 'Ham Sandwich',
         toppings: [
+          await Topping.findOne({ name: 'ham' }),
           await Topping.findOne({ name: 'lettuce' }),
           await Topping.findOne({ name: 'tomato' }),
+          await Topping.findOne({ name: 'mayonnaise' }),
         ],
-        breadType: 'wheat',
+        breadType: 'whole wheat',
       },
       {
-        name: 'Tomato and cucumber',
+        name: 'Grilled Cheese Sandwich',
         toppings: [
+          await Topping.findOne({ name: 'cheddar cheese' }),
+          await Topping.findOne({ name: 'butter' }),
+        ],
+        breadType: 'white',
+      },
+      {
+        name: 'Bacon and Egg Sandwich',
+        toppings: [
+          await Topping.findOne({ name: 'egg' }),
+          await Topping.findOne({ name: 'bacon' }),
           await Topping.findOne({ name: 'tomato' }),
+          await Topping.findOne({ name: 'butter' }),
+        ],
+        breadType: 'whole wheat',
+        diet: 'lactose-free',
+      },
+      {
+        name: 'Avocado Sandwich',
+        toppings: [
+          await Topping.findOne({ name: 'avocado' }),
           await Topping.findOne({ name: 'cucumber' }),
+          await Topping.findOne({ name: 'tomato' }),
+          await Topping.findOne({ name: 'lettuce' }),
+          await Topping.findOne({ name: 'butter' }),
         ],
         breadType: 'rye',
+        diet: 'vegan',
       },
     ];
 

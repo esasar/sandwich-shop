@@ -14,8 +14,12 @@ const sandwichSchema = new Schema({
   }],
   breadType: {
     type: String,
-    enum: ['oat', 'rye', 'wheat'],
+    enum: ['white', 'rye', 'whole wheat'],
     required: true
+  },
+  diet: {
+    type: String,
+    enum: ['vegan', 'lactose-free']
   }
 });
 
