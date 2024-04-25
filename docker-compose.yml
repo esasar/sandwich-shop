@@ -7,8 +7,8 @@ services:
     image: crazepiano-server-a:latest
     # Service dependencies
     depends_on:
-      - rapid-runner-rabbit
-      - mongo-database
+      rapid-runner-rabbit:
+        condition: service_healthy
     # Override the command to run the server
     command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "run", "start"]
     # Configuration options applied at build time
@@ -33,14 +33,20 @@ services:
   # The RabbitMQ service
   rapid-runner-rabbit:
     # Use the official RabbitMQ image with management plugin
-    image: rabbitmq:3-management
+    # image: rabbitmq:3-management
+    image: rabbitmq:3.13.1-alpine
     # Expose ports HOST:CONTAINER
-    ports:
+    # ports:
       # The management plugin listens on port 15672
-      - 15672:15672
+      # - 15672:15672
     # Expose the port to the backend network
     expose:
       - 5672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
     # Networks to join
     networks:
       - backend
@@ -50,7 +56,8 @@ services:
     image: crazepiano-server-b:latest
     # Service dependencies
     depends_on:
-      - rapid-runner-rabbit
+      rapid-runner-rabbit:
+        condition: service_healthy
     command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "start"]
     # Configuration options applied at build time
     build:
