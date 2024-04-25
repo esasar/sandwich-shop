@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('./config.js');
 
-const Order = require('../models/order.js');
 const User = require('../models/user.js');
 const Topping = require('../models/topping.js');
 const Sandwich = require('../models/sandwich.js');
@@ -13,8 +12,12 @@ const connectToDb = async () => {
   console.log(`connecting to MongoDB at ${config.dbUri}`);
   try {
     await mongoose.connect(config.dbUri);
-    await seedDb(); // Uncomment this line to seed the database
-    console.log('connected to MongoDB');
+    const sandwiches = await Sandwich.find({});
+    if (sandwiches.length == 0) {
+      console.log('Seeding database')
+      await seedDb();
+      console.log('Database seeded successfully')
+    }
   } catch (error) {
     console.error('error connecting to MongoDB:', error.message);
   }
