@@ -497,9 +497,9 @@ definitions:
         type: "string"
         description: "bread used in the sandwich"
         enum:
-        - "oat"
+        - "white"
         - "rye"
-        - "wheat"
+        - "whole wheat"
     xml:
       name: "Sandwich"
     example:
@@ -510,7 +510,7 @@ definitions:
       - name: "tomato"
         id: "6602a29748bd8027176f58d0"
       id: "6602a29748bd8027176f58d9"
-      breadType: "oat"
+      breadType: "white"
   SandwichPost:
     type: "object"
     required:
