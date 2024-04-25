@@ -43,4 +43,18 @@ const loginUser = async (username, password) => {
   return data;
 };
 
-export default { getUser, registerUser, loginUser };
+const validateToken = async (token) => {
+  const response = await fetch(`${url}/validate/${token}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token }),
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export default { getUser, registerUser, loginUser, validateToken };
