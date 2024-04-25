@@ -29,7 +29,7 @@ sandwichesRouter.post('/', async (request, response) => {
     name: body.name,
     toppings: body.toppings,
     breadType: body.breadType,
-    diet: body.diet,
+    diet: body.diet
   });
 
   const savedSandwich = await sandwich.save();
@@ -46,7 +46,7 @@ sandwichesRouter.post('/:id', async (request, response) => {
     name: body.name,
     toppings: body.toppings,
     breadType: body.breadType,
-    diet: body.diet,
+    diet: body.diet
   };
 
   const updatedSandwich = await Sandwich.findByIdAndUpdate(request.params.id, sandwich, { new: true }).populate('toppings');

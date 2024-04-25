@@ -37,7 +37,10 @@ const SandwichCard = ({ sandwich }) => {
 
   return (
     <div className='sandwichcard'>
-      <h2 onClick={handleToggle}>{sandwich.name}</h2>
+      <h2 onClick={handleToggle}>{sandwich.name} 
+      {sandwich.diet == 'vegan' ? <> &#9419;</> : <></>}
+      {sandwich.diet == 'lactose-free' ? <> &#9409;</> : <></>}
+      </h2>
       <div className='sandwichcard__content' style={{height: toggle ? contentHeight : "0px"}}>
         <p>Bread: {sandwich.breadType}</p>
         <ul>
