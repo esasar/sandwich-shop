@@ -26,7 +26,7 @@ paths:
     get:
       tags:
       - "order"
-      summary: "Get a list of all orders. Empty array if no orders are found."
+      summary: "Get a list of all orders of the logged in user. Empty array if no orders are found."
       operationId: "getOrders"
       produces:
       - "application/json"
@@ -36,6 +36,8 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/ArrayOfOrders"
+        "401":
+          description: "Token missing or invalid"
       x-swagger-router-controller: "Order"
     post:
       tags:
@@ -50,7 +52,7 @@ paths:
         description: "place an order for a sandwich"
         required: true
         schema:
-          $ref: "#/definitions/OrderWithoutId"
+          $ref: "#/definitions/OrderWithoutOrderId"
       responses:
         "200":
           description: "successful operation"
@@ -58,6 +60,8 @@ paths:
             $ref: "#/definitions/Order"
         "400":
           description: "Order not created"
+        "401":
+          description: "Token missing or invalid"
       x-swagger-router-controller: "Order"
   /order/{orderId}:
     get:
@@ -199,10 +203,6 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
       - name: "sandwichId"
         in: "path"
         description: "Sandwich id to delete"
@@ -235,10 +235,12 @@ paths:
         description: "Created user object"
         required: true
         schema:
-          $ref: "#/definitions/User"
+          $ref: "#/definitions/UserWithoutId"
       responses:
-        default:
+        "200":
           description: "successful operation"
+        "400":
+          description: "unsuccesful operation"
       x-swagger-router-controller: "User"
   /user/login:
     post:
@@ -254,7 +256,7 @@ paths:
         description: "The user for login"
         required: true
         schema:
-          $ref: "#/definitions/User"
+          $ref: "#/definitions/UserLogin"
       responses:
         "200":
           description: "successful operation"
@@ -272,19 +274,6 @@ paths:
         "400":
           description: "Invalid username/password supplied"
       x-swagger-router-controller: "User"
-  /user/logout:
-    post:
-      tags:
-      - "user"
-      summary: "Logs out current logged in user session"
-      operationId: "logoutUser"
-      produces:
-      - "application/json"
-      parameters: []
-      responses:
-        default:
-          description: "successful operation"
-      x-swagger-router-controller: "User"
   /user/{username}:
     get:
       tags:
@@ -296,7 +285,7 @@ paths:
       parameters:
       - name: "username"
         in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing."
+        description: "The name that needs to be fetched."
         required: true
         type: "string"
       responses:
@@ -304,6 +293,52 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/User"
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+      x-swagger-router-controller: "User"
+    put:
+      tags:
+      - "user"
+      summary: "Updates user"
+      description: "Can only be done by the logged in user for the current logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/UserWithoutId"
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+      x-swagger-router-controller: "User"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "Can only be done by the logged in user for the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
         "400":
           description: "Invalid username supplied"
         "404":
@@ -328,61 +363,10 @@ paths:
           description: "token validated succesfully"
         "400":
           description: "token missing"
-      x-swagger-router-controller: "User"
-    put:
-      tags:
-      - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        "400":
-          description: "Invalid user supplied"
-        "404":
-          description: "User not found"
-      x-swagger-router-controller: "User"
-    delete:
-      tags:
-      - "user"
-      summary: "Delete user"
-      description: "This can only be done by the logged in user."
-      operationId: "deleteUser"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be deleted"
-        required: true
-        type: "string"
-      responses:
-        "400":
-          description: "Invalid username supplied"
-        "404":
-          description: "User not found"
+        "401":
+          description: "jwt malformed"
       x-swagger-router-controller: "User"
 securityDefinitions:
-  sandwichestore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://sandwichestore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:sandwiches: "modify sandwiches in your account"
-      read:sandwiches: "read your sandwiches"
   api_key:
     type: "apiKey"
     name: "X-API-KEY"
@@ -419,7 +403,7 @@ definitions:
       status: "ordered"
       id: "6602a29748bd8027176f58e0"
       userId: "6602a29748bd8027176f58e1"
-  OrderWithoutId:
+  OrderWithoutOrderId:
     type: "object"
     properties:
       sandwichId:
@@ -435,11 +419,16 @@ definitions:
         - "inQueue"
         - "ready"
         - "failed"
+      userId:
+        type: "string"
+        minLength: 24
+        maxLength: 24
     xml:
       name: "OrderWithoutId"
     example:
       sandwichId: "6602a29748bd8027176f58da"
       status: "ordered"
+      userId: "6602a29748bd8027176f58da"
   ArrayOfOrders:
     type: "array"
     items:
@@ -463,6 +452,33 @@ definitions:
       password: "password"
       id: "6602a29748bd8027176f58d9"
       email: "email"
+      username: "username"
+  UserWithoutId:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+    xml:
+      name: "User"
+    example:
+      password: "password"
+      email: "email"
+      username: "username"
+  UserLogin:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+    xml:
+      name: "User"
+    example:
+      password: "password"
       username: "username"
   Topping:
     type: "object"
@@ -517,9 +533,9 @@ definitions:
         type: "string"
         description: "bread used in the sandwich"
         enum:
+        - "whole wheat"
         - "white"
         - "rye"
-        - "whole wheat"
     xml:
       name: "Sandwich"
     example:
@@ -530,7 +546,7 @@ definitions:
       - name: "tomato"
         id: "6602a29748bd8027176f58d0"
       id: "6602a29748bd8027176f58d9"
-      breadType: "white"
+      breadType: "whole wheat"
   SandwichPost:
     type: "object"
     required:
@@ -551,9 +567,9 @@ definitions:
         type: "string"
         description: "bread used in the sandwich"
         enum:
-        - "oat"
+        - "whole wheat"
+        - "white"
         - "rye"
-        - "wheat"
     xml:
       name: "Sandwich"
     example:
@@ -561,9 +577,8 @@ definitions:
       toppings:
       - id: "6602a29748bd8027176f58cf"
       - id: "6602a29748bd8027176f58d0"
-      breadType: "oat"
+      breadType: "whole wheat"
   ArrayOfSandwiches:
     type: "array"
     items:
       $ref: "#/definitions/Sandwich"
-  

@@ -19,10 +19,6 @@ ordersRouter.get('/', async (request, response) => {
 });
 
 ordersRouter.get('/:id', async (request, response) => {
-  if (!request.user) {
-    return response.status(401).json({ error: 'token missing or invalid' });
-  }
-
   const order = await Order.findById(request.params.id);
 
   if (!order) {

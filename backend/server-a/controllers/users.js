@@ -11,10 +11,16 @@ const config = require('../utils/config.js');
 usersRouter.post('/', async (request, response) => {
   const body = request.body;
 
-  // Should this check be done elsewhere?
-  const user = await User.findOne({ username: body.username });
-  
+  if (!body.username || !body.password || !body.email) {
+    response.status(400).json({ error: 'Username, password or email missing' });
+  }
+
+  if (!usernameIsValid(body.username)) {
+    response.status(400).json({ error: 'Invalid username supplied. Can only consist of number, letter and _, ., - characters.' });
+  }
+
   // Only creates a new user if user with the same username doesn't already exist.
+  const user = await User.findOne({ username: body.username });
   if (user == null) {
     const new_user = new User({
       username: body.username,
@@ -87,7 +93,7 @@ usersRouter.get('/:username', async (request, response) => {
 // Updates username. This can only be done by the logged in user.
 usersRouter.put('/:username', async (request, response) => {
   // Compare logged in users' username with the username in the URL
-  if (request.user.username !== request.params.username) {
+  if (!request.user || request.user.username !== request.params.username) {
     response.status(401).json({ error: 'Unauthorized' });
   }
 
@@ -111,7 +117,7 @@ usersRouter.put('/:username', async (request, response) => {
 // Delete user. This can only be done by the logged in user.
 usersRouter.delete('/:username', async (request, response) => {
   // Only allow a logged in user to delete their own account.
-  if (request.user.username !== request.params.username) {
+  if (!request.user || request.user.username !== request.params.username) {
     return response.status(401).json({ error: 'Unauthorized' });
   }
   // First checks if username is valid. 

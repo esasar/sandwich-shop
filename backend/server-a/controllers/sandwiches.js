@@ -51,6 +51,10 @@ sandwichesRouter.post('/:id', async (request, response) => {
 
   const updatedSandwich = await Sandwich.findByIdAndUpdate(request.params.id, sandwich, { new: true }).populate('toppings');
 
+  if (!updatedSandwich) {
+    response.status(400).json({ error: 'Invalid ID supplied' });
+  }
+  
   response.json(updatedSandwich);
 });
 
@@ -60,7 +64,7 @@ sandwichesRouter.delete('/:id', async (request, response) => {
   } else {
     const he = await Sandwich.findByIdAndDelete(request.params.id);
     if (!he) {
-      response.status(404).json({ error: 'Invalid ID supplied' });
+      response.status(400).json({ error: 'Invalid ID supplied' });
     }
     response.status(204).end();
   }

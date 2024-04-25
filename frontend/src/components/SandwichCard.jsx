@@ -59,7 +59,8 @@ SandwichCard.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     toppings: PropTypes.array.isRequired,
-    breadType: PropTypes.string.isRequired
+    breadType: PropTypes.string.isRequired,
+    diet: PropTypes.string
   }).isRequired
 }
 
