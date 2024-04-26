@@ -550,6 +550,12 @@ definitions:
         - "whole wheat"
         - "white"
         - "rye"
+      diet:
+        type: "string"
+        description: "if sandwich belongs to certain diet"
+        enum:
+        - "vegan"
+        - "lactose-free"
     xml:
       name: "Sandwich"
     example:
@@ -558,6 +564,7 @@ definitions:
       - id: "6602a29748bd8027176f58cf"
       - id: "6602a29748bd8027176f58d0"
       breadType: "whole wheat"
+      diet: "vegan"
   ArrayOfSandwiches:
     type: "array"
     items:
