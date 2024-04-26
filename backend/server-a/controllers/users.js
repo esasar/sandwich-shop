@@ -49,14 +49,14 @@ usersRouter.post('/login', async (request, response) => {
   });
 
   if (user !== null) {
-    // Generate a JWT, expires in 60*60 seconds (1h)
+    // Generate a JWT, expires in 24*60*60 seconds (1h)
     const token = jwt.sign(
       {
         username: user.username,
         id: user._id
       },
       config.jwtSecret, 
-      { expiresIn: 60 * 60 }
+      { expiresIn: 24 * 60 * 60 }
     );
 
     response.status(200).send({ token, username: user.username, name: user.name });
@@ -64,12 +64,6 @@ usersRouter.post('/login', async (request, response) => {
   else {
     response.status(400).json({ error: 'Invalid username/password supplied' });
   }
-});
-
-
-usersRouter.post('/logout', async (request, response) => {
-  // Since we use JWT, we can't really log out. Depracated this feature or..
-
 });
 
 // Get user by username.
@@ -134,22 +128,6 @@ usersRouter.delete('/:username', async (request, response) => {
     response.end();
   }
 });
-
-usersRouter.post('/validate/:token', async (request, response) => {
-  const token = request.params.token;
-  if (!token) {
-    response.status(400).json({ error: 'Token missing' });
-  }
-
-  const decodedToken = jwt.verify(token, config.jwtSecret);
-
-  if (decodedToken) {
-    response.status(200).json({ message: 'Token is valid' });
-  }
-  else {
-    response.status(200).json({ error: 'Token is invalid' });
-  }
-})
 
 // Function checks if username is valid. 
 // Username can only consist of number, letter and _, ., - characters.
