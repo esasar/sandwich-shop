@@ -25,7 +25,7 @@ module.exports.getTask = function(rabbitHost, queueName){
         var order = JSON.parse(body);
         console.log(" [x] Received '%s'", body);
         var delay = 5; // in seconds
-        console.log(" [x] Task takes %d seconds", secs);
+        console.log(" [x] Task takes %d seconds", delay);
         // Change order status to "received"
         order.status = "received";
         sendTask.addTask("rapid-runner-rabbit", "message-queue-B", order);

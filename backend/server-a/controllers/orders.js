@@ -49,20 +49,15 @@ ordersRouter.post('/', async (request, response) => {
     userId: body.userId
   });
 
-  await order.save()
-  .then(savedOrder => {
-    // Send the order to the RabbitMQ queue
-    sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
-    response.json(savedOrder);
-  })
-  .catch(err => {
-    return response.status(400).json({ error: 'order not created' });
-  });
-  
+  //try {
+  const savedOrder = await order.save();
   // Send the order to the RabbitMQ queue
-  //sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
-
-  //response.json(savedOrder);
+  sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
+  response.json(savedOrder);
+  //}
+  //catch {
+  //  return response.status(400).json({ error: 'Order not created' });
+  //}
 });
 
 module.exports = ordersRouter;
