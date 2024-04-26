@@ -128,8 +128,6 @@ paths:
       responses:
         "200":
           description: "successful operation"
-        "400":
-          description: "Sandwich not created"
         "405":
           description: "Invalid input"
       x-swagger-router-controller: "Sandwich"
@@ -165,7 +163,7 @@ paths:
     post:
       tags:
       - "sandwich"
-      summary: "Updates a sandwich in the store with JSON in body"
+      summary: "Updates a sandwich in the store with JSON in body. Requires api key."
       operationId: "updateSandwich"
       consumes:
       - "application/json"
@@ -200,7 +198,7 @@ paths:
     delete:
       tags:
       - "sandwich"
-      summary: "Deletes a sandwich"
+      summary: "Deletes a sandwich. Requires api key."
       operationId: "deleteSandwich"
       produces:
       - "application/json"
@@ -221,6 +219,8 @@ paths:
           description: "Invalid ID supplied"
         "403":
           description: "Invalid/missing api key"
+        "404":
+          description: "Sandwich not found"
       x-swagger-router-controller: "Sandwich"
   /user:
     post:
@@ -516,6 +516,12 @@ definitions:
         - "whole wheat"
         - "white"
         - "rye"
+      diet:
+        type: "string"
+        description: "if sandwich belongs to certain diet"
+        enum:
+        - "vegan"
+        - "lactose-free"
     xml:
       name: "Sandwich"
     example:
@@ -527,6 +533,7 @@ definitions:
         id: "6602a29748bd8027176f58d0"
       id: "6602a29748bd8027176f58d9"
       breadType: "whole wheat"
+      diet: "vegan"
   SandwichPost:
     type: "object"
     required:

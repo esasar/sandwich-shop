@@ -3,7 +3,7 @@ const Order = require('../models/order.js');
 
 const sendTask = require('../rabbit-utils/sendTask.js');
 
-const hexa24_regex = /^[A-Fa-f0-9]{24}$/ // 24 character hexadecimal regex
+const hexa24_regex = /^[A-Fa-f0-9]{24}$/; // 24 character hexadecimal regex
 
 /**
  * Returns all of the orders of the logged in user.
