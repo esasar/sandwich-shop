@@ -86,6 +86,9 @@ const seedDb = async () => {
       {
         name: 'avocado',
       },
+      {
+        name: 'margarine',
+      }
     ];
 
     const toppingPromises = exampleToppings.map(async (topping) => {
@@ -120,7 +123,7 @@ const seedDb = async () => {
           await Topping.findOne({ name: 'egg' }),
           await Topping.findOne({ name: 'bacon' }),
           await Topping.findOne({ name: 'tomato' }),
-          await Topping.findOne({ name: 'butter' }),
+          await Topping.findOne({ name: 'margarine' }),
         ],
         breadType: 'whole wheat',
         diet: 'lactose-free',
@@ -132,7 +135,7 @@ const seedDb = async () => {
           await Topping.findOne({ name: 'cucumber' }),
           await Topping.findOne({ name: 'tomato' }),
           await Topping.findOne({ name: 'lettuce' }),
-          await Topping.findOne({ name: 'butter' }),
+          await Topping.findOne({ name: 'margarine' }),
         ],
         breadType: 'rye',
         diet: 'vegan',
