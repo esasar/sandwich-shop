@@ -8,17 +8,6 @@ const sendTask = require('./sendTask.js')
 
 var amqp = require('amqplib');
 
-/**
- * Generate a random number between min and max (inclusive)
- * 
- * @param {int} min minimum number (inclusive)
- * @param {int} max maximum number (inclusive)
- * @returns {int} random number between min and max
- */
-const randomIntFromInterval = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 module.exports.getTask = function(rabbitHost, queueName){
   amqp.connect('amqp://' + rabbitHost).then(function(conn) {
     process.once('SIGINT', function() { conn.close(); });
@@ -35,7 +24,7 @@ module.exports.getTask = function(rabbitHost, queueName){
         var body = msg.content.toString();
         var order = JSON.parse(body);
         console.log(" [x] Received '%s'", body);
-        var secs = randomIntFromInterval(5, 10);
+        var delay = 5; // in seconds
         console.log(" [x] Task takes %d seconds", secs);
         // Change order status to "received"
         order.status = "received";
@@ -46,7 +35,7 @@ module.exports.getTask = function(rabbitHost, queueName){
           // Change order status to "ready"
           order.status = "ready";
           sendTask.addTask("rapid-runner-rabbit", "message-queue-B", order);
-        }, secs*1000);
+        }, delay*1000);
       }
     });
   }).catch(console.warn);
