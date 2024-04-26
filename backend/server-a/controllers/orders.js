@@ -4,7 +4,7 @@ const Order = require('../models/order.js');
 const sendTask = require('../rabbit-utils/sendTask.js');
 
 /**
- * Returns all of the orders.
+ * Returns all of the orders of the logged in user.
  */
 ordersRouter.get('/', async (request, response) => {
   if (!request.user) {
@@ -18,6 +18,9 @@ ordersRouter.get('/', async (request, response) => {
   response.json(orders);
 });
 
+/**
+ * Gets orders details by the order id.
+ */
 ordersRouter.get('/:id', async (request, response) => {
   const order = await Order.findById(request.params.id);
 
@@ -30,6 +33,9 @@ ordersRouter.get('/:id', async (request, response) => {
   }
 });
 
+/**
+ * Posts new sandwich order.
+ */
 ordersRouter.post('/', async (request, response) => {
   if (!request.user) {
     return response.status(401).json({ error: 'token missing or invalid' });
@@ -43,11 +49,20 @@ ordersRouter.post('/', async (request, response) => {
     userId: body.userId
   });
 
-  const savedOrder = await order.save();
+  await order.save()
+  .then(savedOrder => {
+    // Send the order to the RabbitMQ queue
+    sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
+    response.json(savedOrder);
+  })
+  .catch(err => {
+    return response.status(400).json({ error: 'order not created' });
+  });
+  
   // Send the order to the RabbitMQ queue
-  sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
+  //sendTask.addTask("rapid-runner-rabbit", "message-queue-A", savedOrder);
 
-  response.json(savedOrder);
+  //response.json(savedOrder);
 });
 
 module.exports = ordersRouter;
