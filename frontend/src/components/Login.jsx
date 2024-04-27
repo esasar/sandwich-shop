@@ -18,7 +18,7 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         setMessage('Login successful!');
         // Redirect to the main page
-        window.location.reload(); // feel free to change it to a better way.
+        window.location.reload(); 
       } else {
         setMessage(data.error);
       }

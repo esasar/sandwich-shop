@@ -241,8 +241,26 @@ paths:
       responses:
         "200":
           description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
         "400":
           description: "unsuccesful operation"
+          schema:
+            type: "object"
+            properties: 
+              error: 
+                type: string
+                description: >
+                  Error is one of the following ones:
+                  * Username, password or email missing
+                  * Invalid username supplied. Can only consist of number, letter and _, ., - characters.
+                  * User with the chosen username already exists
+                  * Not possible to create new user
+                enum:
+                - "Username, password or email missing"
+                - "Invalid username supplied. Can only consist of number, letter and _, ., - characters."
+                - "User with the chosen username already exists"
+                - "Not possible to create new user"
       x-swagger-router-controller: "User"
   /user/login:
     post:
@@ -321,8 +339,12 @@ paths:
         schema:
           $ref: "#/definitions/UserWithoutId"
       responses:
+        "204": 
+          description: "successful operation, no content"
         "400":
           description: "Invalid user supplied"
+        "401":
+          description: "Unauthorized"
         "404":
           description: "User not found"
       x-swagger-router-controller: "User"
@@ -341,8 +363,12 @@ paths:
         required: true
         type: "string"
       responses:
+        "204": 
+          description: "successful operation, no content"
         "400":
           description: "Invalid username supplied"
+        "401":
+          description: "Unauthorized"
         "404":
           description: "User not found"
       x-swagger-router-controller: "User"
@@ -460,6 +486,19 @@ definitions:
     example:
       password: "password"
       username: "username"
+  UserLoginSuccessfull:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+    xml:
+      name: "User"
+    example:
+      password: "password"
+      username: "username"
+
   Topping:
     type: "object"
     required:

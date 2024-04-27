@@ -34,7 +34,6 @@ const getAllOrders = async () => {
  */
 const createOrder = async (order) => {
   const token = localStorage.getItem('token');
-  console.log(order);
   const response = await fetch(url, {
     method: 'POST',
     headers: {

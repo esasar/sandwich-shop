@@ -5,9 +5,9 @@ var User = require('../models/user.js');
 const jwt = require('jsonwebtoken');
 const config = require('../utils/config.js');
 
-// Password is not encrypted now and this could be added later.
-// Creates a new user. If user with the same username already exists, gives an error. 
-// Notice that this doesn't check if username, password and email are valid.
+/**
+ * Creates a new user. If data doesn't fulfill registeration criteria, gives an error.
+ */
 usersRouter.post('/', async (request, response) => {
   const body = request.body;
 
@@ -28,18 +28,26 @@ usersRouter.post('/', async (request, response) => {
       password: body.password,
     });
   
-    const savedUser = await new_user.save();
-    response.json(savedUser);
+    try {
+      const savedUser = await new_user.save();
+      response.json(savedUser);
+    }
+    catch {
+      response.status(400).json({ error: 'Not possible to create new user' });
+    }
   }
   else {
-    // Not in the original sandwich API.
     response.status(400).json({ error: 'User with the chosen username already exists' });
   }
 });
 
-// Checks if user with same username and password can be found in the system.
+
+/**
+ * Logs user in the system.
+ */
 usersRouter.post('/login', async (request, response) => {
   const body = request.body;
+  // Checks if user with same password and username is found on the db.
   const user = await User.findOne(
     {
     $and: [
@@ -66,7 +74,9 @@ usersRouter.post('/login', async (request, response) => {
   }
 });
 
-// Get user by username.
+/**
+ * Get user by username.
+ */
 usersRouter.get('/:username', async (request, response) => {
   // First checks if username is valid.
   if (!usernameIsValid(request.params.username)) {
@@ -84,7 +94,9 @@ usersRouter.get('/:username', async (request, response) => {
   }
 });
 
-// Updates username. This can only be done by the logged in user.
+/**
+ * Updates username. This can only be done by the logged in user.
+ */
 usersRouter.put('/:username', async (request, response) => {
   // Compare logged in users' username with the username in the URL
   if (!request.user || request.user.username !== request.params.username) {
@@ -103,12 +115,15 @@ usersRouter.put('/:username', async (request, response) => {
     if ( user === null ) {
       response.status(404).json({ error: 'User not found' });
     }
-
-    response.end();
+    else {
+      response.status(204).end();
+    }
   }
 });
 
-// Delete user. This can only be done by the logged in user.
+/**
+ * Delete user. This can only be done by the logged in user.
+ */
 usersRouter.delete('/:username', async (request, response) => {
   // Only allow a logged in user to delete their own account.
   if (!request.user || request.user.username !== request.params.username) {
@@ -124,8 +139,9 @@ usersRouter.delete('/:username', async (request, response) => {
     if ( user === null ) {
       response.status(404).json({ error: 'User not found' });
     }
-
-    response.end();
+    else {
+      response.status(204).end();
+    }
   }
 });
 
