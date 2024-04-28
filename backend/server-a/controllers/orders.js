@@ -33,9 +33,14 @@ ordersRouter.get('/:id', async (request, response) => {
 
   if (!order) {
     response.status(404).json({ error: 'Order not found' });
-  } else if (order.user.toString() !== request.user._id.toString()) {
+  }
+  else if (!request.user) {
+    return response.status(401).json({ error: 'Unauthorized' });
+  }
+  else if (order.userId.toString() !== request.user._id.toString()) {
     response.status(401).json({ error: 'Unauthorized' });
-  } else {
+  } 
+  else {
     response.json(order);
   }
 });
