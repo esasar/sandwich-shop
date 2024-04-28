@@ -2,10 +2,12 @@
 
 ## Introduction
 
+See the project documentation for more information.
+
 WebDev2 -course project work. Collaborators:
 - Esa Särkelä
 - Heidi Seppi
-- 
+- Mohammed Al-Gburi
 
 ## Running the application
 Clone the repository to your local machine
@@ -36,9 +38,9 @@ Once the application is running, you can access it as follows:
 
 **Server-b**: Does not expose any ports to the host machine.
 
-**Frontend**: http://localhost:5173. React application.
+**Frontend**: http://localhost:80. React application hosted on nginx.
 
-**RabbitMQ**: http://localhost:15672/. RabbitMQ message broker management plugin
+**RabbitMQ**: Does not expose any ports to the host machine.
 
 **MongoDB**: Does not expose any ports to the host machine.
 
