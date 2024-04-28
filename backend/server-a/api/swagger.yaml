@@ -26,7 +26,7 @@ paths:
     get:
       tags:
       - "order"
-      summary: "Get a list of all orders of the logged in user. Empty array if no orders are found."
+      summary: "Get a list of all orders of the logged in user. This means that a bearer token needs to be provided. Empty array if no orders are found."
       operationId: "getOrders"
       produces:
       - "application/json"
@@ -313,7 +313,7 @@ paths:
       tags:
       - "user"
       summary: "Updates user"
-      description: "Can only be done by the logged in user for the current logged in user."
+      description: "Can only be done by the logged in user for the current logged in user. This means that a bearer token needs to be provided."
       operationId: "updateUser"
       produces:
       - "application/json"
@@ -343,7 +343,7 @@ paths:
       tags:
       - "user"
       summary: "Delete user"
-      description: "Can only be done by the logged in user for the logged in user."
+      description: "Can only be done by the logged in user for the logged in user. This means that a bearer token needs to be provided."
       operationId: "deleteUser"
       produces:
       - "application/json"

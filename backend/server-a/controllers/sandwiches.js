@@ -63,6 +63,14 @@ sandwichesRouter.post('/:id', async (request, response) => {
     return response.status(403).json({ error: 'Invalid/missing api key' });
   }
 
+  if (!(hexa24_regex.test(request.params.id))) {
+    return response.status(400).json({ error: 'Invalid ID supplied' });
+  }
+
+  if (!request.body.name || !request.body.toppings || !request.body.breadType || !request.body.diet) {
+    return response.status(405).json({ error: 'Invalid input.' });
+  }
+  
   const body = request.body;
   body.toppings = body.toppings.map(topping => new mongoose.Types.ObjectId(topping));
 
@@ -76,7 +84,7 @@ sandwichesRouter.post('/:id', async (request, response) => {
   const updatedSandwich = await Sandwich.findByIdAndUpdate(request.params.id, sandwich, { new: true }).populate('toppings');
 
   if (!updatedSandwich) {
-    return response.status(405).json({ error: 'Invalid input' });
+    return response.status(405).json({ error: 'Invalid input.' });
   }
   
   response.json(updatedSandwich);

@@ -32,7 +32,7 @@ services:
 
   # The RabbitMQ service
   rapid-runner-rabbit:
-    # Use the official RabbitMQ image with management plugin
+    # Use the official RabbitMQ image
     # image: rabbitmq:3-management
     image: rabbitmq:3.13.1-alpine
     # Expose ports HOST:CONTAINER
@@ -75,8 +75,8 @@ services:
     volumes:
       - mongodb:/data/db
     # Networks to join
-    ports:
-      - 27017:27017
+    expose:
+      - 27017
     networks:
       - backend
 
@@ -93,7 +93,7 @@ services:
     # Expose ports HOST:CONTAINER
     ports:
       - 80:80
-      #- 5173:5173 # For development
+      # - 5173:5173 # For development
     # Service dependencies
     depends_on:
       - server-a
