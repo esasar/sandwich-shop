@@ -67,7 +67,7 @@ usersRouter.post('/login', async (request, response) => {
       { expiresIn: 24 * 60 * 60 }
     );
 
-    response.status(200).send({ token, username: user.username, name: user.name });
+    response.status(200).send({ token, username: user.username });
   }
   else {
     response.status(400).json({ error: 'Invalid username/password supplied' });

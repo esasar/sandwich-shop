@@ -280,17 +280,8 @@ paths:
       responses:
         "200":
           description: "successful operation"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
           schema:
-            type: "string"
+            $ref: "#/definitions/LoginCompleted"
         "400":
           description: "Invalid username/password supplied"
       x-swagger-router-controller: "User"
@@ -498,7 +489,19 @@ definitions:
     example:
       password: "password"
       username: "username"
-
+  LoginCompleted:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        format: application/jwt
+      username: 
+        type: "string"
+    xml:
+      name: "User"
+    example:
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDJhMjk3NDhiZDgwMjcxNzZmNThkOSIsInVzZXJuYW1lIjoiSm9obiBEb2UifQ.rOvKTnj2h4AG-eSLzpagrtQQKePkQmdrMn0Vs0RuVyM"
+      username: "username"
   Topping:
     type: "object"
     required:
