@@ -8,7 +8,6 @@ WORKDIR /app/backend/server-b
 COPY ./package*.json ./
 
 # Install dependencies
-RUN apk add --no-cache bash
 RUN npm install --silent
 
 # Copy code needed to run the app to the container

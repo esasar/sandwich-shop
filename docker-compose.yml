@@ -10,7 +10,7 @@ services:
       rapid-runner-rabbit:
         condition: service_healthy
     # Override the command to run the server
-    command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "run", "start"]
+    command: ["npm", "run", "start"]
     # Configuration options applied at build time
     build:
       # Name of the Dockerfile (not really necesarry when default name)
@@ -58,7 +58,7 @@ services:
     depends_on:
       rapid-runner-rabbit:
         condition: service_healthy
-    command: ["./utils/wait-for-it.sh", "rapid-runner-rabbit:5672", "--",  "npm", "start"]
+    command: ["npm", "start"]
     # Configuration options applied at build time
     build:
       dockerfile: Dockerfile
