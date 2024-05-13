@@ -1,6 +1,6 @@
 ## Webdev -architecting course project
 
-A 'sandwich shop', that implements a simple distributed backend with multiple services communicating asyncronously via a AMPQ message queue.
+A 'sandwich shop', that implements a simple distributed backend with multiple services communicating asyncronously via a AMQP message queue.
 
 ## Introduction
 
